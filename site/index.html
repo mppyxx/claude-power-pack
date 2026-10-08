@@ -122,7 +122,7 @@
           "name": "How do I update it?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Run git pull in the pack folder (or download the ZIP again), then run bash install.sh. New skills get added and everything you already have stays as it is. To replace your installed skills and rules with the pack's newer versions, add --force; your old copies are backed up first."
+            "text": "It updates itself. Once a day, in the background, it checks this GitHub repo for a new version. It then updates only the pack's own skills and rules that you haven't changed, adds new skills, and tells you what changed at the start of your next session. Anything you edited stays exactly as you left it, and it never installs software on its own. Turn it off with: bash ~/.claude/power-pack/auto-update.sh off"
           }
         },
         {
@@ -765,7 +765,7 @@
       </details>
       <details id="update">
         <summary><h3>How do I update it?</h3></summary>
-        <div class="a"><p>Run <code>git pull</code> in the pack folder (or download the ZIP again), then run <code>bash install.sh</code>. New skills get added and everything you already have stays as it is. To replace your installed skills and rules with the pack's newer versions, add <code>--force</code>; your old copies are backed up first.</p></div>
+        <div class="a"><p>It updates itself. Once a day, in the background, it checks this GitHub repo for a new version. It then updates only the pack's own skills and rules that you haven't changed, adds new skills, and tells you what changed at the start of your next session. Anything you edited stays exactly as you left it, and it never installs software on its own. Turn it off with: <code>bash ~/.claude/power-pack/auto-update.sh off</code></p></div>
       </details>
       <details id="windows">
         <summary><h3>Does it work on Windows?</h3></summary>

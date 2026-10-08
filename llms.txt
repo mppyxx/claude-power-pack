@@ -12,6 +12,7 @@ Key facts:
 - Safe to re-run: backs up settings.json, CLAUDE.md and a list of existing skills to `~/.claude-power-pack-backup/<date-time>/` first, and never overwrites the user's own skills, settings or rules unless `--force` is passed.
 - Works with Claude Max; Claude Pro works too but hits usage limits sooner. Some tools need paid accounts: Higgsfield credits, Ahrefs, DaVinci Resolve Studio.
 - macOS is the main target. Linux works for skills, rules, settings, plugins and MCP servers. Windows is untested; WSL may work.
+- Updates itself: once a day, in the background, it checks the GitHub repo and updates only the pack's own skills and rules the user hasn't changed (fingerprint check), then Claude mentions what changed. `bash ~/.claude/power-pack/auto-update.sh off` turns it off.
 - Logins (connectors, API keys, CLI sign-ins) are done by the user by hand; the installer never asks for a password or key.
 - Independent community project by mppyxx. Not affiliated with Anthropic.
 

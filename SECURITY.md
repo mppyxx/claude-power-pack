@@ -13,9 +13,10 @@ Everything happens inside your own user account. Run `bash install.sh --dry-run`
 - **Skills.** Copies each folder in `skills/` into `~/.claude/skills`. If you already have a skill with the same name, yours is left alone. With `--extras` it also copies the folders in `extras/`.
 - **Two skills straight from their authors.** Skills whose repos don't allow copying are listed in `skills-upstream.txt`. The installer fetches them from the author's GitHub repo with `npx skills add`: `hormozi-ad-factory` by default, `remotion-best-practices` only with `--extras`. It sets `DISABLE_TELEMETRY=1` so the skills CLI doesn't report the install. npx downloads that CLI from npm and caches it in `~/.npm`, and the CLI notes where the skill came from in `~/.agents/.skill-lock.json`.
 - **Working rules.** Adds the text of `rules/CLAUDE.md` to `~/.claude/CLAUDE.md`, between a `<!-- claude-power-pack:start -->` line and a `<!-- claude-power-pack:end -->` line. Anything already in the file stays above it. If the section is already there, it's left exactly as it is, including your edits.
-- **Settings.** Merges `settings/settings.json` into `~/.claude/settings.json`. Any key you've already set keeps your value. For groups of entries, like plugin sources, only the missing ones are added. The pack sets the Opus model, high effort, workflows on, five plugin marketplace sources and one hook. The hook runs before Claude's shell commands: when the command is a search (grep, find, rg and similar) in a folder that has a graphify knowledge graph, it gives Claude a tip to use the graph instead. It doesn't send anything anywhere. The merged file is saved as formatted JSON. If your `settings.json` isn't valid JSON, it isn't touched.
+- **Settings.** Merges `settings/settings.json` into `~/.claude/settings.json`. Any key you've already set keeps your value. For groups of entries, like plugin sources, only the missing ones are added. The pack sets the Opus model, high effort, workflows on, five plugin marketplace sources and two hooks. The session-start hook is for automatic updates (see below). The other hook runs before Claude's shell commands: when the command is a search (grep, find, rg and similar) in a folder that has a graphify knowledge graph, it gives Claude a tip to use the graph instead. It doesn't send anything anywhere. The merged file is saved as formatted JSON. If your `settings.json` isn't valid JSON, it isn't touched.
 - **Plugins** (skip with `--skip-plugins`). Through the `claude` command, it adds five plugin marketplaces (anthropics/claude-plugins-official, anthropics/knowledge-work-plugins, forrestchang/andrej-karpathy-skills, firebase/firebase-tools and latent-spaces/brag) and installs nine plugins for your user. Ones you already have are skipped.
 - **MCP servers** (skip with `--skip-mcp`). Adds `playwright` (`npx @playwright/mcp@latest`) and `chrome-devtools` (`npx -y chrome-devtools-mcp@latest`) for your user, unless you already have servers with those names. Neither needs a key. When Claude Code starts them, npx fetches the latest version from npm.
+- **Update bookkeeping.** Creates `~/.claude/power-pack/` with `manifest.json` (the installed version and a fingerprint of every pack skill and of the rules section) and the small scripts that run updates.
 - **A final check.** Runs `tools/verify.sh`, which only reads.
 
 The plugin and MCP steps need the `claude` command. If it isn't installed, the installer says so and skips them.
@@ -62,6 +63,19 @@ A skill is instructions, and sometimes scripts, that Claude follows with the sam
 - The copies in `skills/` and `extras/` are fixed snapshots. They only change when this repo changes.
 - The skills in `skills-upstream.txt`, the plugins and the two MCP servers come straight from their sources when you install (the MCP servers each time they start). They can change after this pack was put together.
 - To review a skill, open its folder in `~/.claude/skills` and read `SKILL.md` and any scripts next to it. To remove one, delete its folder.
+
+## Automatic updates
+
+So the pack can keep improving after you install it, it updates itself. Here is exactly what that means.
+
+- **When:** at the start of a Claude Code session, a hook starts `~/.claude/power-pack/updater.sh` in the background and returns right away. The updater checks at most once a day.
+- **Where from:** only `https://github.com/mppyxx/claude-power-pack`, fetched with git into `~/.claude/power-pack/repo/`.
+- **What it changes:** it runs the new version's `install.sh --update`. Update mode replaces a pack skill only if its fingerprint still matches what the pack installed, so any skill you edited, or had before installing, is never touched. Same for the rules section. It adds new skills and merges new settings keys the same way a normal install does. Replaced copies are moved to the backup folder, not deleted.
+- **What it never does:** no `--force`, no `--tools`, no plugin or MCP changes, no software installs, no sudo, and nothing outside `~/.claude` and its own cache. The only thing it ever deletes is its own temporary download folder.
+- **How you find out:** it writes a short note, and the next session's start hook hands that note to Claude, which mentions what changed. The full log is `~/.claude/power-pack/update.log`.
+- **Turning it off:** `bash ~/.claude/power-pack/auto-update.sh off`, or install with `--no-auto-update`. `auto-update.sh status` shows the version and the last check.
+
+The trade-off, plainly: automatic updates mean you trust future versions of this repo, not only the one you read today. If that's not for you, turn them off and update by hand when you've read the changes. Every change is public in the commit history and `CHANGELOG.md`.
 
 ## Reporting a problem
 

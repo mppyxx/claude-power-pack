@@ -69,6 +69,7 @@ Don't push all of these at once. Ask what they mostly use Claude for, and do the
 - Tell them to fully quit and reopen Claude Code (and the desktop app) so the new skills, plugins and rules load.
 - Offer one test prompt that fits them, for example: "Build a one-page site for a coffee shop called Ember, make it not look AI-generated, and show me screenshots."
 - Give a three-line summary: what got installed, what's still optional, and that `docs/` explains everything if they're ever curious.
+- Tell them in one line that the pack updates itself once a day (only the parts they haven't changed) and that `bash ~/.claude/power-pack/auto-update.sh off` turns that off.
 
 ## Reference (read only if you need it)
 

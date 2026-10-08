@@ -56,6 +56,15 @@ else
   miss "claude command not found, so plugins and MCP servers can't be checked"
 fi
 
+echo "Automatic updates"
+if [ -f "$CLAUDE_DIR/power-pack/manifest.json" ]; then
+  au="$(python3 "$CLAUDE_DIR/power-pack/pack_state.py" get --manifest "$CLAUDE_DIR/power-pack/manifest.json" auto_update 2>/dev/null)"
+  ver="$(python3 "$CLAUDE_DIR/power-pack/pack_state.py" get --manifest "$CLAUDE_DIR/power-pack/manifest.json" version 2>/dev/null)"
+  ok "version $ver, auto-update $au"
+else
+  miss "no power-pack/manifest.json (run install.sh again)"
+fi
+
 echo "Command-line tools (only needed for the skills that use them)"
 for t in graphify:graphify playwright-cli:playwright-cli firecrawl:firecrawl-skills tvly:tavily-research higgsfield:higgsfield-skills yt-dlp:video-skills ffmpeg:video-skills whisper-cli:reel-reader uv:graphify gh:github-work; do
   bin="${t%%:*}"; why="${t#*:}"

@@ -73,6 +73,7 @@ cd ~/claude-power-pack && bash install.sh --tools
 | **Working rules** | [`rules/CLAUDE.md`](rules/CLAUDE.md): act without hand-holding, test before saying "done", get a second review on big work, write like a person |
 | **Settings** | Opus, high effort, workflows on. Values you already set always win |
 | **Browser tools** | Playwright and Chrome DevTools MCP servers, ready to use |
+| **Automatic updates** | Once a day it checks GitHub for a new version and updates only the pack's skills and rules you haven't changed. Claude tells you what's new. One command turns it off |
 | **Connector guide** | 14 claude.ai connectors (Gmail, Calendar, Drive, Notion, Figma, Canva, Vercel and more) and 15 desktop extensions: what each does and where to turn it on. See [docs/CONNECTORS.md](docs/CONNECTORS.md) |
 
 ### What you can ask for
@@ -115,7 +116,8 @@ You never have to name a skill. Describe the outcome and Claude picks the right 
 - **It never overwrites your stuff.** Skills you already have, settings you already set, and your own edits to the rules are kept unless you pass `--force`.
 - **No passwords or API keys.** The installer never asks for one, and the rules tell Claude never to ask for one in chat. Logins happen in your own browser or terminal.
 - **No `sudo`.** Nothing outside your user account is changed.
-- **Tested on every change.** GitHub Actions runs a full install on macOS and Linux, plus a re-run and a merge test against an existing setup.
+- **Updates never overwrite your edits.** The pack fingerprints every skill and the rules it installs. An update only replaces copies that still match, pulls only from this repo, and never installs software.
+- **Tested on every change.** GitHub Actions runs a full install on macOS and Linux, plus a re-run, a merge test against an existing setup, and an update test that edits a skill and checks the update leaves it alone.
 - **Every author credited.** Third-party skills keep their own licences ([THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)). Two skills without an open licence aren't copied here; the installer fetches them from their authors.
 
 Skills run with the same permissions as Claude, so the [security policy](SECURITY.md) explains what to check and how to report a problem.
@@ -148,11 +150,15 @@ Yes, that's the easiest way. Open the folder in Claude Code and say "install thi
 
 ### How do I update it?
 
+You don't have to. Once a day, in the background, it checks this GitHub repo for a new version. It then updates only the pack's own skills and rules that you haven't changed, adds new skills, and tells you what changed at the start of your next session. Anything you edited stays exactly as you left it, and it never installs software on its own.
+
 ```bash
-cd ~/claude-power-pack && git pull && bash install.sh
+bash ~/.claude/power-pack/auto-update.sh status   # version, on or off, last check
+bash ~/.claude/power-pack/auto-update.sh now      # update right now
+bash ~/.claude/power-pack/auto-update.sh off      # stop automatic updates
 ```
 
-A re-run keeps everything you changed. To replace your skills with the pack's newest copies, add `--force` (the old versions go to the backup folder, and the pack's rules section is reset too).
+Prefer to stay pinned to one version? Install with `bash install.sh --no-auto-update`, or turn it off later.
 
 ### How do I uninstall it?
 

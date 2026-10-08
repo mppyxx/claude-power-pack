@@ -65,7 +65,8 @@ jobs:
         run: |
           bash -n install.sh
           bash -n tools/verify.sh
-          python3 -m py_compile tools/merge_settings.py
+          for f in tools/updater.sh tools/session-start.sh tools/auto-update.sh; do bash -n "$f"; done
+          python3 -m py_compile tools/merge_settings.py tools/pack_state.py
           echo "ok    install.sh, tools/verify.sh and tools/merge_settings.py parse"
 
       - name: ShellCheck (errors only)
@@ -81,7 +82,7 @@ jobs:
             fi
           fi
           shellcheck --version | sed -n 2p
-          shellcheck -S error install.sh tools/verify.sh
+          shellcheck -S error install.sh tools/verify.sh tools/updater.sh tools/session-start.sh tools/auto-update.sh
           echo "ok    no ShellCheck errors"
 
       - name: Dry run changes nothing
@@ -251,6 +252,61 @@ jobs:
                   original = original or json.load(f).get("model") == "sonnet"
           check(original, "the original settings.json was backed up first")
 
+          sys.exit(1 if failed else 0)
+          PY
+
+      - name: Update test (auto-update only touches what you haven't changed)
+        run: |
+          export HOME="$RUNNER_TEMP/update-home"
+          unset CLAUDE_CONFIG_DIR
+          mkdir -p "$HOME"
+          bash install.sh --skip-plugins --skip-mcp > "$RUNNER_TEMP/update-install.log" 2>&1 || true
+          # a "new version" of the pack: one skill changed, one skill the user also edited, one new skill, new rules
+          NEW="$RUNNER_TEMP/new-version"
+          rm -rf "$NEW"; cp -R "$GITHUB_WORKSPACE" "$NEW"; rm -rf "$NEW/.git"
+          python3 - "$NEW" <<'PY'
+          import pathlib, shutil, sys
+          root = pathlib.Path(sys.argv[1])
+          (root / "VERSION").write_text("9.9.9\n")
+          for name, line in (("humanizer", "pack update"), ("animate", "pack update")):
+              p = root / "skills" / name / "SKILL.md"
+              p.write_text(p.read_text() + f"\n{line}\n")
+          shutil.copytree(root / "skills" / "humanizer", root / "skills" / "zz-new-skill")
+          p = root / "skills" / "zz-new-skill" / "SKILL.md"
+          p.write_text(p.read_text().replace("name: humanizer", "name: zz-new-skill", 1))
+          p = root / "rules" / "CLAUDE.md"
+          p.write_text(p.read_text() + "\n- A rule added in the new version.\n")
+          PY
+          printf '\nmy own tweak\n' >> "$HOME/.claude/skills/animate/SKILL.md"
+          # serve the new version from a local git repo and let the real updater pick it up
+          git -C "$NEW" init -q -b main
+          git -C "$NEW" add -A
+          git -C "$NEW" -c user.name=ci -c user.email=ci@example.com commit -qm "new version"
+          POWER_PACK_REPO_URL="file://$NEW" bash "$HOME/.claude/power-pack/updater.sh" --now
+          cat "$HOME/.claude/power-pack/update.log"
+          bash "$HOME/.claude/power-pack/session-start.sh" > "$RUNNER_TEMP/hook.json" || true
+          python3 - <<'PY'
+          import json, os, sys
+          home = os.environ["HOME"]; claude = os.path.join(home, ".claude"); state = os.path.join(claude, "power-pack")
+          failed = []
+          def check(ok, what):
+              print(("ok    " if ok else "FAIL  ") + what)
+              if not ok:
+                  failed.append(what)
+          def read(*p):
+              with open(os.path.join(*p), encoding="utf-8") as f:
+                  return f.read()
+          check("pack update" in read(claude, "skills", "humanizer", "SKILL.md"), "an untouched pack skill was updated")
+          animate = read(claude, "skills", "animate", "SKILL.md")
+          check("my own tweak" in animate and "pack update" not in animate, "a skill the user edited was kept as the user left it")
+          check(os.path.isfile(os.path.join(claude, "skills", "zz-new-skill", "SKILL.md")), "a new skill in the new version was added")
+          check("A rule added in the new version." in read(claude, "CLAUDE.md"), "unedited rules were updated")
+          check(json.loads(read(state, "manifest.json")).get("version") == "9.9.9", "the manifest records the new version")
+          hook = json.loads(read(os.environ["RUNNER_TEMP"], "hook.json"))
+          ctx = hook["hookSpecificOutput"]["additionalContext"]
+          check(hook["hookSpecificOutput"]["hookEventName"] == "SessionStart" and "9.9.9" in ctx and "animate" in ctx,
+                "the next session start tells Claude what changed, including the kept edit")
+          check(not os.path.isdir(os.path.join(state, "update.lock")), "the updater released its lock")
           sys.exit(1 if failed else 0)
           PY
 

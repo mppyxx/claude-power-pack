@@ -7,6 +7,9 @@
 #   bash install.sh --force     replace skills you already have with the pack's copy (old copy is backed up)
 #   bash install.sh --dry-run   show what would happen, change nothing
 #   bash install.sh --skip-plugins / --skip-mcp
+#   bash install.sh --no-auto-update   install without the daily background update check
+#   bash install.sh --update    what the auto-updater runs: refresh only the pack's skills and rules you
+#                               haven't changed, add new ones, merge new settings (no plugins, MCP, --tools or --force)
 #
 # Safe to run more than once. Everything it replaces is backed up first.
 
@@ -16,7 +19,7 @@ CLAUDE_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 BACKUP="$HOME/.claude-power-pack-backup/$STAMP"
 
-TOOLS=0; EXTRAS=0; FORCE=0; DRY=0; SKIP_PLUGINS=0; SKIP_MCP=0
+TOOLS=0; EXTRAS=0; FORCE=0; DRY=0; SKIP_PLUGINS=0; SKIP_MCP=0; UPDATE=0; AUTO_UPDATE=on
 for a in "$@"; do
   case "$a" in
     --tools) TOOLS=1 ;;
@@ -25,7 +28,9 @@ for a in "$@"; do
     --dry-run) DRY=1 ;;
     --skip-plugins) SKIP_PLUGINS=1 ;;
     --skip-mcp) SKIP_MCP=1 ;;
-    -h|--help) sed -n '2,12p' "$0"; exit 0 ;;
+    --update) UPDATE=1 ;;
+    --no-auto-update) AUTO_UPDATE=off ;;
+    -h|--help) sed -n '2,15p' "$0"; exit 0 ;;
     *) echo "Unknown option: $a (try --help)"; exit 2 ;;
   esac
 done
@@ -37,9 +42,14 @@ exec 3>&1
 run()  { if [ "$DRY" = 1 ]; then printf '  (dry run) %s\n' "$*" >&3; else "$@"; fi; }
 WARNINGS=0
 have() { command -v "$1" >/dev/null 2>&1; }
+STATE="$CLAUDE_DIR/power-pack"
+MANIFEST="$STATE/manifest.json"
+VERSION="$(cat "$PACK/VERSION" 2>/dev/null || echo unknown)"
+COMMIT="$(git -C "$PACK" rev-parse HEAD 2>/dev/null || echo unknown)"
+if [ "$UPDATE" = 1 ]; then FORCE=0; TOOLS=0; SKIP_PLUGINS=1; SKIP_MCP=1; fi   # updates only touch skills, rules and settings
 did()  { [ "$DRY" = 1 ] || say "$*"; }   # success lines, hidden in a dry run
 
-say "Claude Power Pack"
+say "Claude Power Pack $VERSION"
 say "pack:   $PACK"
 say "target: $CLAUDE_DIR"
 [ "$DRY" = 1 ] && say "DRY RUN: nothing will be changed"
@@ -78,42 +88,31 @@ fi
 say "done"
 
 # ---------------------------------------------------------------- 2. skills
-install_skill_dir() {   # $1 = source folder of skills
-  local src="$1" added=0 skipped=0 replaced=0 name
-  [ "$DRY" = 1 ] || mkdir -p "$CLAUDE_DIR/skills"
-  for d in "$src"/*/; do
-    name="$(basename "$d")"
-    [ -f "$d/SKILL.md" ] || continue
-    if [ -e "$CLAUDE_DIR/skills/$name" ]; then
-      if [ "$FORCE" = 1 ]; then
-        if [ "$DRY" = 0 ]; then
-          mkdir -p "$BACKUP/skills"
-          mv "$CLAUDE_DIR/skills/$name" "$BACKUP/skills/$name"
-          cp -R "$d" "$CLAUDE_DIR/skills/$name"
-        fi
-        replaced=$((replaced + 1))
-      else
-        skipped=$((skipped + 1))
-      fi
-    else
-      [ "$DRY" = 1 ] || cp -R "$d" "$CLAUDE_DIR/skills/$name"
-      added=$((added + 1))
-    fi
-  done
-  if [ "$DRY" = 1 ]; then say "would add $added, replace $replaced, keep your own copy of $skipped"; else say "added $added, replaced $replaced, left $skipped that were already there alone (--force replaces them with the pack copy)"; fi
+# tools/pack_state.py copies the skills and records a fingerprint of each one it installs, so later
+# updates can tell the pack's untouched copies apart from skills you edited or already had.
+skill_mode=install; [ "$FORCE" = 1 ] && skill_mode=force; [ "$UPDATE" = 1 ] && skill_mode=update
+sync_skills() {   # $1 = source folder, $2 = group name
+  local extra=()
+  [ "$DRY" = 1 ] && extra+=(--dry-run)
+  python3 "$PACK/tools/pack_state.py" skills --src "$1" --dst "$CLAUDE_DIR/skills" --manifest "$MANIFEST" \
+    --mode "$skill_mode" --group "$2" --backup "$BACKUP/skills" ${extra[@]+"${extra[@]}"} \
+    || warn "could not install the skills from $1"
 }
 section "Installing skills into $CLAUDE_DIR/skills"
-install_skill_dir "$PACK/skills"
-if [ "$EXTRAS" = 1 ]; then
+sync_skills "$PACK/skills" skills
+had_extras=0
+if [ -f "$MANIFEST" ] && grep -q '"group": "extras"' "$MANIFEST"; then had_extras=1; fi
+if [ "$EXTRAS" = 1 ] || { [ "$UPDATE" = 1 ] && [ "$had_extras" = 1 ]; }; then
+  EXTRAS=1
   section "Installing extra skills"
-  install_skill_dir "$PACK/extras"
+  sync_skills "$PACK/extras" extras
 fi
 
 # ---------------------------------------------------------------- 2b. skills fetched from their original repos
 # skills-upstream.txt lists skills that are installed straight from their authors' GitHub repos
 # (one "name owner/repo [extra]" per line) instead of being copied from this folder.
 UPSTREAM="$PACK/skills-upstream.txt"
-if [ -f "$UPSTREAM" ] && grep -qvE '^[[:space:]]*(#|$)' "$UPSTREAM"; then
+if [ "$UPDATE" = 0 ] && [ -f "$UPSTREAM" ] && grep -qvE '^[[:space:]]*(#|$)' "$UPSTREAM"; then
   section "Installing skills from their authors' GitHub repos"
   if ! have npx; then
     warn "Node.js (npx) is needed to fetch these skills. Install Node, then run this again."
@@ -138,32 +137,11 @@ fi
 
 # ---------------------------------------------------------------- 3. working rules (CLAUDE.md)
 section "Installing the working rules (CLAUDE.md)"
-START="<!-- claude-power-pack:start -->"; END="<!-- claude-power-pack:end -->"
-if [ "$DRY" = 1 ]; then
-  say "  (dry run) would add the rules to $CLAUDE_DIR/CLAUDE.md"
-else
-  python3 - "$PACK/rules/CLAUDE.md" "$CLAUDE_DIR/CLAUDE.md" "$START" "$END" "$FORCE" <<'PY' || warn "could not install the working rules (CLAUDE.md)"
-import os, sys
-src, dst, start, end, force = sys.argv[1:6]
-block = f"{start}\n{open(src).read().rstrip()}\n{end}\n"
-old = open(dst).read() if os.path.exists(dst) else ""
-if start in old and end in old and force != "1":
-    print(f"{dst}: the pack's rules are already there, left as you have them (--force resets them to the pack's version)")
-    sys.exit(0)
-elif start in old and end in old:
-    new = old[:old.index(start)] + block + old[old.index(end) + len(end):].lstrip("\n")
-    msg = "reset the pack's section to the original (your old file is in the backup)"
-elif old.strip():
-    new = old.rstrip() + "\n\n" + block
-    msg = "added the pack's rules below your existing ones"
-else:
-    new = block
-    msg = "created it"
-os.makedirs(os.path.dirname(dst), exist_ok=True)
-open(dst, "w").write(new)
-print(f"{dst}: {msg}")
-PY
-fi
+rules_mode=install; [ "$FORCE" = 1 ] && rules_mode=force; [ "$UPDATE" = 1 ] && rules_mode=update
+rules_extra=(); [ "$DRY" = 1 ] && rules_extra+=(--dry-run)
+python3 "$PACK/tools/pack_state.py" rules --src "$PACK/rules/CLAUDE.md" --dst "$CLAUDE_DIR/CLAUDE.md" \
+  --manifest "$MANIFEST" --mode "$rules_mode" ${rules_extra[@]+"${rules_extra[@]}"} \
+  || warn "could not install the working rules (CLAUDE.md)"
 
 # ---------------------------------------------------------------- 4. settings
 section "Merging settings (your existing values win)"
@@ -258,7 +236,31 @@ if [ "$TOOLS" = 1 ]; then
   fi
 fi
 
-# ---------------------------------------------------------------- 8. done
+# ---------------------------------------------------------------- 8. automatic updates
+section "Automatic updates"
+if [ "$DRY" = 1 ]; then
+  say "  (dry run) would record version $VERSION and copy the updater to $STATE (auto-update: $AUTO_UPDATE)"
+else
+  mkdir -p "$STATE"
+  for f in pack_state.py updater.sh session-start.sh auto-update.sh; do cp "$PACK/tools/$f" "$STATE/$f"; done
+  au="$AUTO_UPDATE"; [ "$UPDATE" = 1 ] && au=keep
+  python3 "$PACK/tools/pack_state.py" stamp --manifest "$MANIFEST" --version "$VERSION" --commit "$COMMIT" --auto-update "$au" >/dev/null \
+    || warn "could not record the installed version"
+  if [ "$(python3 "$PACK/tools/pack_state.py" get --manifest "$MANIFEST" auto_update)" = "on" ]; then
+    say "on: once a day, in the background, Claude Power Pack checks GitHub for a new version and updates only"
+    say "the pack's skills and rules you haven't changed. Turn it off: bash $STATE/auto-update.sh off"
+  else
+    say "off. Update any time with: bash $STATE/auto-update.sh now"
+  fi
+fi
+
+if [ "$UPDATE" = 1 ]; then
+  if [ "$WARNINGS" -gt 0 ]; then say "Update finished with $WARNINGS warning(s)."; exit 1; fi
+  say "Update finished."
+  exit 0
+fi
+
+# ---------------------------------------------------------------- 9. done
 section "Checking the result"
 [ "$DRY" = 1 ] || bash "$PACK/tools/verify.sh" || warn "the check above found problems in the core install"
 

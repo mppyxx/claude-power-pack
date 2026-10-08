@@ -2,6 +2,22 @@
 
 What changed in each release of Claude Power Pack. Dates are year-month-day.
 
+## 1.1.0 (2026-10-08)
+
+### Automatic updates
+
+- The pack now keeps itself up to date. Once a day, in the background, it checks this repo for a new version and runs `install.sh --update`.
+- Updates only replace the pack's own skills and rules that you haven't changed. The installer records a fingerprint of each one, so your edits and your own same-named skills are never touched. New skills are added, new settings keys are merged, and replaced copies go to the backup folder.
+- Claude tells you what changed at the start of your next session.
+- `bash ~/.claude/power-pack/auto-update.sh status|on|off|now`, and `install.sh --no-auto-update` to install without it.
+- Updates never use `--force` or `--tools`, never change plugins or MCP servers, and never install software.
+- If you installed 1.0.0, run `bash install.sh` once from the new version to turn this on. Skills you never edited are picked up automatically.
+
+### Also
+
+- A new CI step edits a skill and runs a real update, checking the edit survives and everything else updates.
+- `VERSION` file.
+
 ## 1.0.0 (2026-10-08)
 
 The first public release.

@@ -77,4 +77,7 @@ Try a few real prompts:
 
 ## Undo
 
+To stop automatic updates without uninstalling anything: `bash ~/.claude/power-pack/auto-update.sh off`.
+
+
 Your previous `settings.json`, `CLAUDE.md` and any replaced skills are in `~/.claude-power-pack-backup/<date-time>/`. To remove the pack's rules, delete everything between the `claude-power-pack:start` and `claude-power-pack:end` lines in `~/.claude/CLAUDE.md`. Plugins: `claude plugin uninstall <name>`. MCP servers: `claude mcp remove <name>`.
