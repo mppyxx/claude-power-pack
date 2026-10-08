@@ -1,0 +1,52 @@
+{
+ "_doc": "Neutral: no creative look at all (identity look LUT). Only the technical conversion, balance and matching remain. For people who want to grade by hand on top.",
+ "look": {
+  "warmth": 0.0,
+  "tint": 0.0,
+  "curve": "s",
+  "contrast": 0.0,
+  "pivot": 0.475,
+  "shadow_tint": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "highlight_tint": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "tint_range": [
+   0.4,
+   0.6
+  ],
+  "sat": 1.0,
+  "sat_hi_reduce": 0.0,
+  "sat_sh_reduce": 0.0,
+  "hue_sat": {
+   "red": 1.0,
+   "orange": 1.0,
+   "yellow": 1.0,
+   "green": 1.0,
+   "cyan": 1.0,
+   "blue": 1.0,
+   "magenta": 1.0
+  },
+  "hue_shift": {
+   "red": 0,
+   "orange": 0,
+   "yellow": 0,
+   "green": 0,
+   "cyan": 0,
+   "blue": 0,
+   "magenta": 0
+  },
+  "skin_protect": 0.0,
+  "skin_line_pull": 0.0,
+  "skin_sat": 1.0,
+  "print_density": 0.0,
+  "hue_lum": {},
+  "black_lift": 0.0,
+  "white_point": 1.0
+ }
+}

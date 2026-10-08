@@ -1,0 +1,3 @@
+# Runtime packages for media_lab.py and edit_lab.py
+numpy>=1.24
+pillow>=10.1

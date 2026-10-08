@@ -1,0 +1,52 @@
+{
+ "_doc": "Clean social pop: bright commercial look with clean whites and blacks, vivid product color and natural skin. Product, beauty and brand social. Avoid on noisy low-light footage.",
+ "render": {
+  "lum_preserve": 0.35
+ },
+ "look": {
+  "curve": "s",
+  "contrast": 0.42,
+  "pivot": 0.47,
+  "shadow_tint": [
+   -0.006,
+   0.0,
+   0.006
+  ],
+  "highlight_tint": [
+   0.0,
+   -0.001,
+   -0.008
+  ],
+  "tint_range": [
+   0.4,
+   0.6
+  ],
+  "sat": 1.22,
+  "sat_hi_reduce": 0.3,
+  "sat_sh_reduce": 0.2,
+  "hue_sat": {
+   "red": 1.05,
+   "orange": 1.02,
+   "yellow": 1.12,
+   "green": 1.08,
+   "cyan": 1.12,
+   "blue": 1.2,
+   "magenta": 1.1
+  },
+  "hue_shift": {
+   "red": 0,
+   "orange": -1,
+   "yellow": 0,
+   "green": 3,
+   "cyan": 0,
+   "blue": 0,
+   "magenta": 0
+  },
+  "skin_protect": 0.45,
+  "skin_line_pull": 0.35,
+  "skin_sat": 1.0,
+  "print_density": 0.3,
+  "black_lift": 0.006,
+  "white_point": 0.985
+ }
+}

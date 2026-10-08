@@ -1,0 +1,3 @@
+# Runtime packages for grade_lab.py, cameras.py and social_qc.py
+numpy>=1.24
+pillow>=10.1

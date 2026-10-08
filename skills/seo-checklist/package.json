@@ -1,0 +1,1 @@
+{ "name": "seo-checklist", "private": true, "type": "module", "dependencies": { "jsdom": "^29.1.1" } }

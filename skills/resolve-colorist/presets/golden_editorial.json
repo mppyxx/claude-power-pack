@@ -1,0 +1,55 @@
+{
+ "_doc": "Golden editorial: warm lifestyle look with olive greens, warm stone neutrals and a soft matte finish. Food, hospitality, travel and craft brands. Watch skin drifting yellow on warm footage.",
+ "balance": {
+  "global_temp": 0.6
+ },
+ "render": {
+  "lum_preserve": 0.2
+ },
+ "look": {
+  "curve": "s",
+  "contrast": 0.3,
+  "pivot": 0.47,
+  "shadow_tint": [
+   0.004,
+   0.001,
+   -0.004
+  ],
+  "highlight_tint": [
+   0.003,
+   -0.001,
+   -0.024
+  ],
+  "tint_range": [
+   0.4,
+   0.6
+  ],
+  "sat": 1.05,
+  "sat_hi_reduce": 0.2,
+  "sat_sh_reduce": 0.15,
+  "hue_sat": {
+   "red": 0.95,
+   "orange": 1.05,
+   "yellow": 0.95,
+   "green": 0.72,
+   "cyan": 0.78,
+   "blue": 0.7,
+   "magenta": 0.85
+  },
+  "hue_shift": {
+   "red": 0,
+   "orange": -1,
+   "yellow": -3,
+   "green": -8,
+   "cyan": 0,
+   "blue": 0,
+   "magenta": 0
+  },
+  "skin_protect": 0.35,
+  "skin_line_pull": 0.25,
+  "skin_sat": 1.0,
+  "print_density": 0.3,
+  "black_lift": 0.028,
+  "white_point": 0.95
+ }
+}

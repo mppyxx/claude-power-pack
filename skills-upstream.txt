@@ -1,0 +1,5 @@
+# Skills installed straight from their authors' GitHub repos instead of being copied here,
+# because their repos don't carry an open licence that allows re-hosting.
+# Format: name  owner/repo  [extra = only with --extras]
+hormozi-ad-factory pedronauck/skills
+remotion-best-practices remotion-dev/skills extra

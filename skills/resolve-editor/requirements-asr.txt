@@ -1,0 +1,3 @@
+# Optional local transcription through the whisper.cpp Python binding, for computers without whisper-cli
+# (install.sh --asr / install.ps1 -Asr installs it only when whisper-cli is not found)
+pywhispercpp>=1.5.1

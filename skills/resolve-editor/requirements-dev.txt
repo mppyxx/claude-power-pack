@@ -1,0 +1,2 @@
+# Packages for running the test suite (the tests use only the standard library on top of the runtime packages)
+-r requirements.txt

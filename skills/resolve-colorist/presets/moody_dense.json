@@ -1,0 +1,52 @@
+{
+ "_doc": "Moody and dense: deep contrast, rich blacks that keep detail, a cool muted world and warm protected skin. Night, music, drama, premium tech. Not for bright happy brand pieces.",
+ "render": {
+  "exposure": 0.62
+ },
+ "look": {
+  "curve": "s",
+  "contrast": 0.5,
+  "pivot": 0.45,
+  "shadow_tint": [
+   -0.016,
+   -0.004,
+   0.016
+  ],
+  "highlight_tint": [
+   0.004,
+   0.001,
+   -0.006
+  ],
+  "tint_range": [
+   0.35,
+   0.65
+  ],
+  "sat": 0.95,
+  "sat_hi_reduce": 0.25,
+  "sat_sh_reduce": 0.35,
+  "hue_sat": {
+   "red": 0.95,
+   "orange": 1.0,
+   "yellow": 0.85,
+   "green": 0.62,
+   "cyan": 0.85,
+   "blue": 0.9,
+   "magenta": 0.85
+  },
+  "hue_shift": {
+   "red": 0,
+   "orange": 0,
+   "yellow": -4,
+   "green": 6,
+   "cyan": 0,
+   "blue": 0,
+   "magenta": 0
+  },
+  "skin_protect": 0.6,
+  "skin_line_pull": 0.3,
+  "skin_sat": 1.1,
+  "print_density": 0.38,
+  "black_lift": 0.022,
+  "white_point": 0.94
+ }
+}

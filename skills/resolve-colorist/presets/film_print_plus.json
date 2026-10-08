@@ -1,0 +1,61 @@
+{
+ "_doc": "Film print plus: like film_print but with hue-selective density (greens, cyans and reds darker, skin nearly untouched), closer to Kodak 2383. Needs the look.hue_lum control.",
+ "_requires": [
+  "look.hue_lum"
+ ],
+ "look": {
+  "curve": "s",
+  "contrast": 0.3,
+  "pivot": 0.48,
+  "shadow_tint": [
+   -0.03,
+   0.0,
+   0.026
+  ],
+  "highlight_tint": [
+   0.004,
+   0.006,
+   -0.03
+  ],
+  "tint_range": [
+   0.45,
+   0.58
+  ],
+  "sat": 1.05,
+  "sat_hi_reduce": 0.25,
+  "sat_sh_reduce": 0.2,
+  "hue_sat": {
+   "red": 0.92,
+   "orange": 1.05,
+   "yellow": 1.0,
+   "green": 0.72,
+   "cyan": 1.0,
+   "blue": 0.8,
+   "magenta": 0.85
+  },
+  "hue_shift": {
+   "red": 0,
+   "orange": -2,
+   "yellow": -8,
+   "green": 6,
+   "cyan": 10,
+   "blue": -8,
+   "magenta": 0
+  },
+  "skin_protect": 0.4,
+  "skin_line_pull": 0.25,
+  "skin_sat": 1.0,
+  "print_density": 0.18,
+  "black_lift": 0.03,
+  "white_point": 0.98,
+  "hue_lum": {
+   "red": 0.9,
+   "orange": 1.0,
+   "yellow": 0.96,
+   "green": 0.78,
+   "cyan": 0.86,
+   "blue": 0.94,
+   "magenta": 0.97
+  }
+ }
+}

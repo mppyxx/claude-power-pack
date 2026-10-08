@@ -1,0 +1,49 @@
+{
+ "_doc": "Gentle complementary harmony: split tone anchored at grey with a neutral band, blues toward cyan, yellows toward orange. Only when the footage already has warm skin and cool elements.",
+ "look": {
+  "curve": "s",
+  "contrast": 0.4,
+  "pivot": 0.47,
+  "shadow_tint": [
+   -0.02,
+   0.003,
+   0.016
+  ],
+  "highlight_tint": [
+   0.002,
+   -0.002,
+   -0.022
+  ],
+  "tint_range": [
+   0.3,
+   0.62
+  ],
+  "sat": 1.1,
+  "sat_hi_reduce": 0.2,
+  "sat_sh_reduce": 0.15,
+  "hue_sat": {
+   "red": 0.95,
+   "orange": 1.05,
+   "yellow": 1.0,
+   "green": 0.85,
+   "cyan": 1.2,
+   "blue": 1.05,
+   "magenta": 0.85
+  },
+  "hue_shift": {
+   "red": 0,
+   "orange": -2,
+   "yellow": -6,
+   "green": 4,
+   "cyan": 0,
+   "blue": -10,
+   "magenta": 0
+  },
+  "skin_protect": 0.5,
+  "skin_line_pull": 0.3,
+  "skin_sat": 1.02,
+  "print_density": 0.3,
+  "black_lift": 0.012,
+  "white_point": 0.97
+ }
+}

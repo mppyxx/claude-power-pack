@@ -1,0 +1,5015 @@
+{
+ "schema": "resolve-editor/fx-catalog@1",
+ "version": "2026-10-01",
+ "_doc": "Effects, transitions and text animations the build and the preview know. Generated from the research notes (FUSION_PLAN.md s2.5): source names the research note behind each row (a research reference: those notes do not ship with the skill). enabled false rows are refused by assemble with their refuse message; gate names the sandbox acceptance test that must pass for a P1 row to stay enabled. gate_result records what the sandbox test measured. stills_ok true: keyed effects on still images passed AT-A5 (a 1.0 to 1.1 push rendered 1.0, 1.05, 1.1).",
+ "stills_ok": true,
+ "transitions": {
+  "cross_dissolve": {
+   "prio": "P0",
+   "enabled": true,
+   "family": "dissolve",
+   "resolve": {
+    "type": "Cross Dissolve",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "dissolve",
+    "class": "exact",
+    "measured": "[PRV] s3.3: 1.000"
+   },
+   "tolerance": "transition_exact",
+   "frames": {
+    "min": 8,
+    "max": 12,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row cross_dissolve)",
+   "what": "linear mix of A into B (frame k shows (k + 0.5)/d of B)",
+   "use_when": "time passing, change of place, memory, a soft montage of related moments, slow emotional music, the end of a story beat",
+   "amateur_when": "on every cut, to hide a jump cut in a talking head (reads as mush), 2-5 frames between unrelated shots (reads as a glitch), over a beat drop"
+  },
+  "dip_to_black": {
+   "prio": "P0",
+   "enabled": true,
+   "family": "dissolve",
+   "resolve": {
+    "type": "Dip To Color Dissolve",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "dip",
+    "class": "exact",
+    "measured": "[PRV] s3.3: 1.000 (correlation cannot see a dip: relative level)"
+   },
+   "tolerance": "transition_exact",
+   "frames": {
+    "min": 12,
+    "max": 24,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row dip_to_black)",
+   "what": "A fades to black over the first half, B rises from black over the second (black is fixed by script)",
+   "use_when": "a chapter break, a jump in time, before the end card, a reset between unrelated ideas",
+   "amateur_when": "several in one short piece, between shots of one scene, at the very start of a reel (delays the hook)"
+  },
+  "additive_dissolve": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "flash",
+   "resolve": {
+    "type": "Additive Dissolve",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "brightness_flash",
+    "class": "close",
+    "measured": "[PRV] s3.3: 0.966"
+   },
+   "tolerance": "transition_close",
+   "frames": {
+    "min": 8,
+    "max": 16,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row additive_dissolve)",
+   "what": "adds the two pictures, so the middle frames brighten strongly toward white",
+   "use_when": "a bright, airy dissolve (light, summer, dreamy, wedding), a soft flash between bright shots",
+   "amateur_when": "on dark or night footage (it clips highlights), on skin close-ups (burns out faces)",
+   "frames30": [
+    2,
+    7
+   ]
+  },
+  "blur_dissolve": {
+   "prio": "P0",
+   "enabled": true,
+   "family": "dissolve",
+   "resolve": {
+    "type": "Blur Dissolve",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:hblur",
+    "class": "close",
+    "measured": "[PRV] s3.3: 0.859"
+   },
+   "tolerance": "transition_close",
+   "frames": {
+    "min": 10,
+    "max": 16,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row blur_dissolve)",
+   "what": "a dissolve with both pictures softened through the middle",
+   "use_when": "a dreamy or soft change between related shots (beauty, wedding, product), a softer alternative to a plain dissolve",
+   "amateur_when": "in fast energetic cuts, on text-heavy frames (text smears)"
+  },
+  "non_additive_dissolve": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "dissolve",
+   "resolve": {
+    "type": "Non-Additive Dissolve",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "dissolve",
+    "class": "approx",
+    "measured": "[PRV] s3.3: 0.963, no better than missing"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 10,
+    "max": 20,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row non_additive_dissolve)",
+   "what": "a contrasty ghosted mix that keeps the brighter of the two pictures, then B",
+   "use_when": "a high-contrast ghosted mix (silhouettes, light sources over dark shots)",
+   "amateur_when": "almost everywhere else: it darkens then jumps",
+   "brief_ok": true,
+   "refuse": "non_additive_dissolve is a P2 transition (Non-Additive Dissolve): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "smooth_cut": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "dissolve",
+   "resolve": {
+    "type": "Smooth Cut",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "dissolve",
+    "class": "approx",
+    "measured": "[PRV] s3.3: optical-flow morph, no ffmpeg match"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 2,
+    "max": 4,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row smooth_cut)",
+   "what": "an optical-flow morph from A to B, meant to hide a jump cut inside one shot",
+   "use_when": "hiding a small jump cut inside one talking-head shot (same framing, head in nearly the same place, a pause removed)",
+   "amateur_when": "between different shots, when the head moved or turned (faces warp), longer than about 6 frames",
+   "gate": "plan s6 question 8 (Smooth Cut on a real talking-head jump cut)",
+   "only": "inside one take: same media, source gap under 2 s",
+   "gate_result": "plan s6 question 8: clean on one 0.2 s jump inside a b-roll take; not yet seen on a talking-head jump cut (no such footage in the test labs)"
+  },
+  "arrow_iris": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "shape",
+   "resolve": {
+    "type": "Arrow Iris",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:circleopen",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.132"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 10,
+    "max": 20,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row arrow_iris)",
+   "what": "B opens from the centre in a growing arrow shape",
+   "use_when": "a retro or comic tone (silent-film iris out, a kids' piece), a playful reveal from the centre",
+   "amateur_when": "in brand, premium, documentary, interview or wedding work",
+   "brief_ok": true,
+   "refuse": "arrow_iris is a P2 transition (Arrow Iris): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "cross_iris": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "shape",
+   "resolve": {
+    "type": "Cross Iris",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:horzopen",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.155"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 10,
+    "max": 20,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row cross_iris)",
+   "what": "B opens from the centre in a growing cross shape",
+   "use_when": "a retro or comic tone (silent-film iris out, a kids' piece), a playful reveal from the centre",
+   "amateur_when": "in brand, premium, documentary, interview or wedding work",
+   "brief_ok": true,
+   "refuse": "cross_iris is a P2 transition (Cross Iris): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "diamond_iris": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "shape",
+   "resolve": {
+    "type": "Diamond Iris",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:circleopen",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.125"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 10,
+    "max": 20,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row diamond_iris)",
+   "what": "B opens from the centre in a growing diamond shape",
+   "use_when": "a retro or comic tone (silent-film iris out, a kids' piece), a playful reveal from the centre",
+   "amateur_when": "in brand, premium, documentary, interview or wedding work",
+   "brief_ok": true,
+   "refuse": "diamond_iris is a P2 transition (Diamond Iris): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "eye_iris": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "shape",
+   "resolve": {
+    "type": "Eye Iris",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:horzopen",
+    "class": "close",
+    "measured": "[PRV] s3.3: 0.878"
+   },
+   "tolerance": "transition_close",
+   "frames": {
+    "min": 10,
+    "max": 20,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row eye_iris)",
+   "what": "B opens from the centre in a growing eye shape",
+   "use_when": "a retro or comic tone (silent-film iris out, a kids' piece), a playful reveal from the centre",
+   "amateur_when": "in brand, premium, documentary, interview or wedding work",
+   "brief_ok": true,
+   "refuse": "eye_iris is a P2 transition (Eye Iris): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "hexagon_iris": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "shape",
+   "resolve": {
+    "type": "Hexagon Iris",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:horzopen",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.141"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 10,
+    "max": 20,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row hexagon_iris)",
+   "what": "B opens from the centre in a growing hexagon shape",
+   "use_when": "a retro or comic tone (silent-film iris out, a kids' piece), a playful reveal from the centre",
+   "amateur_when": "in brand, premium, documentary, interview or wedding work",
+   "brief_ok": true,
+   "refuse": "hexagon_iris is a P2 transition (Hexagon Iris): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "oval_iris": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "shape",
+   "resolve": {
+    "type": "Oval Iris",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:horzopen",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.124"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 10,
+    "max": 20,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row oval_iris)",
+   "what": "B opens from the centre in a growing oval shape",
+   "use_when": "a retro or comic tone (silent-film iris out, a kids' piece), a playful reveal from the centre",
+   "amateur_when": "in brand, premium, documentary, interview or wedding work",
+   "brief_ok": true,
+   "refuse": "oval_iris is a P2 transition (Oval Iris): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "pentagon_iris": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "shape",
+   "resolve": {
+    "type": "Pentagon Iris",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:horzopen",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.114"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 10,
+    "max": 20,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row pentagon_iris)",
+   "what": "B opens from the centre in a growing pentagon shape",
+   "use_when": "a retro or comic tone (silent-film iris out, a kids' piece), a playful reveal from the centre",
+   "amateur_when": "in brand, premium, documentary, interview or wedding work",
+   "brief_ok": true,
+   "refuse": "pentagon_iris is a P2 transition (Pentagon Iris): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "square_iris": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "shape",
+   "resolve": {
+    "type": "Square Iris",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:horzopen",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.131"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 10,
+    "max": 20,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row square_iris)",
+   "what": "B opens from the centre in a growing square shape",
+   "use_when": "a retro or comic tone (silent-film iris out, a kids' piece), a playful reveal from the centre",
+   "amateur_when": "in brand, premium, documentary, interview or wedding work",
+   "brief_ok": true,
+   "refuse": "square_iris is a P2 transition (Square Iris): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "triangle_iris": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "shape",
+   "resolve": {
+    "type": "Triangle Iris",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:horzopen",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.129"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 10,
+    "max": 20,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row triangle_iris)",
+   "what": "B opens from the centre in a growing triangle shape",
+   "use_when": "a retro or comic tone (silent-film iris out, a kids' piece), a playful reveal from the centre",
+   "amateur_when": "in brand, premium, documentary, interview or wedding work",
+   "brief_ok": true,
+   "refuse": "triangle_iris is a P2 transition (Triangle Iris): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "push": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "whip",
+   "resolve": {
+    "type": "Push",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:slideright",
+    "class": "close",
+    "measured": "[PRV] s3.3: 0.535 on coded grids; AT-A4 sandbox on real footage: span median 0.853, min 0.803"
+   },
+   "tolerance": "transition_close",
+   "frames": {
+    "min": 6,
+    "max": 12,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row push)",
+   "what": "B enters from the LEFT and pushes A out to the right, constant speed (direction fixed by script)",
+   "use_when": "a playful, graphic move from one item to the next (a product line-up, before and after, a list of tips), when the next shot's content moves the same way",
+   "amateur_when": "when the direction has no motivation, on emotional content, when it repeats on every cut",
+   "frames30": [
+    5,
+    13
+   ],
+   "gate": "AT-A4 (fidelity on real footage)",
+   "gate_result": "AT-A4 passed on real footage (median 0.853): close class"
+  },
+  "slide": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "whip",
+   "resolve": {
+    "type": "Slide",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:coverright",
+    "class": "close",
+    "measured": "[PRV] s3.3: 0.770 on coded grids; AT-A4 sandbox on real footage: span median 0.929, min 0.793"
+   },
+   "tolerance": "transition_close",
+   "frames": {
+    "min": 6,
+    "max": 12,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row slide)",
+   "what": "B slides in from the LEFT over A, which stays still (direction fixed by script)",
+   "use_when": "a graphic reveal, a card or screen sliding over (UI demos, lists)",
+   "amateur_when": "same as Push; reads as a slideshow when unmotivated",
+   "frames30": [
+    5,
+    13
+   ],
+   "gate": "AT-A4 (fidelity on real footage)",
+   "gate_result": "AT-A4 passed on real footage (median 0.929): close class"
+  },
+  "barn_door": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Barn Door",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:vertopen",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.165"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 10,
+    "max": 16,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row barn_door)",
+   "what": "B opens from a vertical strip in the centre outward, like two doors",
+   "use_when": "a doors-opening reveal (a venue, a launch)",
+   "amateur_when": "almost everywhere else",
+   "brief_ok": true,
+   "refuse": "barn_door is a P2 transition (Barn Door): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "split": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Split",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:distance",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.173"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 10,
+    "max": 16,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row split)",
+   "what": "B appears as a cross in the centre that widens until it fills the frame",
+   "use_when": "a graphic four-way reveal",
+   "amateur_when": "almost everywhere",
+   "brief_ok": true,
+   "refuse": "split is a P2 transition (Split): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "box": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "shape",
+   "resolve": {
+    "type": "Box",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:diagbl",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.182"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 10,
+    "max": 20,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row box)",
+   "what": "B appears in a tall rectangle growing from the centre",
+   "use_when": "parody, a kids' piece, a deliberate retro joke (Heart for a Valentine's gag)",
+   "amateur_when": "anywhere with a brand, a message or an emotion: the star wipe is the textbook amateur transition",
+   "brief_ok": true,
+   "refuse": "box is a P2 transition (Box): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "heart": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "shape",
+   "resolve": {
+    "type": "Heart",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:horzopen",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.122"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 10,
+    "max": 20,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row heart)",
+   "what": "B appears in a heart growing from the centre",
+   "use_when": "parody, a kids' piece, a deliberate retro joke (Heart for a Valentine's gag)",
+   "amateur_when": "anywhere with a brand, a message or an emotion: the star wipe is the textbook amateur transition",
+   "brief_ok": true,
+   "refuse": "heart is a P2 transition (Heart): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "star": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "shape",
+   "resolve": {
+    "type": "Star",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:horzopen",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.126"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 10,
+    "max": 20,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row star)",
+   "what": "B appears in a star growing from the centre",
+   "use_when": "parody, a kids' piece, a deliberate retro joke (Heart for a Valentine's gag)",
+   "amateur_when": "anywhere with a brand, a message or an emotion: the star wipe is the textbook amateur transition",
+   "brief_ok": true,
+   "refuse": "star is a P2 transition (Star): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "triangle_left": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "shape",
+   "resolve": {
+    "type": "Triangle Left",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:diagbr",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.132"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 10,
+    "max": 20,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row triangle_left)",
+   "what": "a diagonal edge sweeps in from the top left corner",
+   "use_when": "parody, a kids' piece, a deliberate retro joke (Heart for a Valentine's gag)",
+   "amateur_when": "anywhere with a brand, a message or an emotion: the star wipe is the textbook amateur transition",
+   "brief_ok": true,
+   "refuse": "triangle_left is a P2 transition (Triangle Left): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "triangle_right": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "shape",
+   "resolve": {
+    "type": "Triangle Right",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:diagbl",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.129"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 10,
+    "max": 20,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row triangle_right)",
+   "what": "a diagonal edge sweeps in from the top right corner",
+   "use_when": "parody, a kids' piece, a deliberate retro joke (Heart for a Valentine's gag)",
+   "amateur_when": "anywhere with a brand, a message or an emotion: the star wipe is the textbook amateur transition",
+   "brief_ok": true,
+   "refuse": "triangle_right is a P2 transition (Triangle Right): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "edge_wipe": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "wipe",
+   "resolve": {
+    "type": "Edge Wipe",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:wipeup",
+    "class": "close",
+    "measured": "[PRV] s3.3: 0.920"
+   },
+   "tolerance": "transition_close",
+   "frames": {
+    "min": 10,
+    "max": 20,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row edge_wipe)",
+   "what": "a straight horizontal edge wipes from the bottom to the top (direction fixed by script)",
+   "use_when": "a motivated wipe: an object or person crossing the frame hides the line (natural wipe), a retro serial homage",
+   "amateur_when": "a plain unmotivated wipe in brand work (a wipe broke a luxury brand's tone in the study cited in KNOWLEDGE section 8)"
+  },
+  "clock_wipe": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "wipe",
+   "resolve": {
+    "type": "Clock Wipe",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:radial",
+    "class": "close",
+    "measured": "[PRV] s3.3: 0.962"
+   },
+   "tolerance": "transition_close",
+   "frames": {
+    "min": 12,
+    "max": 25,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row clock_wipe)",
+   "what": "a clockwise sweep from 12 o'clock",
+   "use_when": "time passing, a countdown, a before and after of a day",
+   "amateur_when": "as a generic transition"
+  },
+  "center_wipe": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "wipe",
+   "resolve": {
+    "type": "Center Wipe",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:vertopen",
+    "class": "close",
+    "measured": "[PRV] s3.3: 0.848"
+   },
+   "tolerance": "transition_close",
+   "frames": {
+    "min": 10,
+    "max": 16,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row center_wipe)",
+   "what": "B opens from a vertical line in the centre outward",
+   "use_when": "a graphic reveal from the centre line",
+   "amateur_when": "almost everywhere",
+   "brief_ok": true,
+   "refuse": "center_wipe is a P2 transition (Center Wipe): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "band_wipe": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "wipe",
+   "resolve": {
+    "type": "Band Wipe",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:hlwind",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.204"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 10,
+    "max": 20,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row band_wipe)",
+   "what": "interleaved horizontal bands of B slide in from both sides",
+   "use_when": "a retro or broadcast-graphics look on purpose",
+   "amateur_when": "anywhere a viewer should not notice the edit",
+   "brief_ok": true,
+   "refuse": "band_wipe is a P2 transition (Band Wipe): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "radial_wipe": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "wipe",
+   "resolve": {
+    "type": "Radial Wipe",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:radial",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.197"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 10,
+    "max": 20,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row radial_wipe)",
+   "what": "several wedges sweep round the centre at once (a multi-blade radial)",
+   "use_when": "a retro or broadcast-graphics look on purpose",
+   "amateur_when": "anywhere a viewer should not notice the edit",
+   "brief_ok": true,
+   "refuse": "radial_wipe is a P2 transition (Radial Wipe): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "spiral_wipe": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "wipe",
+   "resolve": {
+    "type": "Spiral Wipe",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:circleopen",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.211"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 10,
+    "max": 20,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row spiral_wipe)",
+   "what": "B appears along a spiral path from the centre",
+   "use_when": "a retro or broadcast-graphics look on purpose",
+   "amateur_when": "anywhere a viewer should not notice the edit",
+   "brief_ok": true,
+   "refuse": "spiral_wipe is a P2 transition (Spiral Wipe): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "venetian_blind_wipe": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "wipe",
+   "resolve": {
+    "type": "Venetian Blind Wipe",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:circleopen",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.206"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 10,
+    "max": 20,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row venetian_blind_wipe)",
+   "what": "horizontal stripes of B thicken until they join",
+   "use_when": "a retro or broadcast-graphics look on purpose",
+   "amateur_when": "anywhere a viewer should not notice the edit",
+   "brief_ok": true,
+   "refuse": "venetian_blind_wipe is a P2 transition (Venetian Blind Wipe): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "x_wipe": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "wipe",
+   "resolve": {
+    "type": "X Wipe",
+    "category": "simple",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:circleopen",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.19"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 10,
+    "max": 20,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row x_wipe)",
+   "what": "B opens as an X from the centre",
+   "use_when": "a retro or broadcast-graphics look on purpose",
+   "amateur_when": "anywhere a viewer should not notice the edit",
+   "brief_ok": true,
+   "refuse": "x_wipe is a P2 transition (X Wipe): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "burn_away": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "other",
+   "resolve": {
+    "type": "Burn Away",
+    "category": "ofx",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:vuwind",
+    "class": "close",
+    "measured": "[PRV] s3.3: 0.864"
+   },
+   "tolerance": "transition_close",
+   "frames": {
+    "min": 12,
+    "max": 25,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row burn_away)",
+   "what": "a burning edge (charred line) eats A from the bottom up (motion mode fixed by script)",
+   "use_when": "a vintage, film or music-video look; a chapter change in a nostalgic piece",
+   "amateur_when": "in clean modern brand work; more than once per piece"
+  },
+  "dctl_transition": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "DCTL Transition",
+    "category": "ofx",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "hold_a",
+    "class": "approx",
+    "measured": "[TR] s4: a cut at the end until a DCTL is chosen"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": null,
+    "max": null,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row dctl_transition)",
+   "what": "no effect until a transition DCTL is chosen in the Inspector: A for the whole length, then a cut",
+   "use_when": "only with a transition DCTL chosen in the Inspector (not settable by script)",
+   "amateur_when": "as placed by script: it shows the outgoing shot for the whole duration, then cuts",
+   "never": true,
+   "refuse": "DCTL Transition does nothing until a DCTL file is picked by hand in the Inspector (fusion/transitions/notes.md s4); the skill never places it (manual step M4)"
+  },
+  "pan_left_fx": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "whip",
+   "resolve": {
+    "type": "Pan Left",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {
+     "Motion Blur": 1,
+     "Quality": 8,
+     "Shutter Angle": 360
+    },
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "pan:left",
+    "class": "approx",
+    "measured": "[PRV] s3.3: 0.10 to 0.27 (lens bulge)"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 6,
+    "max": 10,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row pan_left_fx)",
+   "what": "a mirrored, lens-warped whip to the left with a dissolve in the middle (motion blur off by default)",
+   "use_when": "the built-in whip pan (mirrored, lens-warped travel with a dissolve in the middle; switch its Motion Blur input on, it ships off): energetic reels, travel, events, a jump between places, on a beat",
+   "amateur_when": "with motion blur left off (the mirror seams show, measured on real footage); direction against the camera motion in the shots; slow emotional pieces; several in a row",
+   "frames30": [
+    5,
+    13
+   ],
+   "motion_blur": true,
+   "gate": "AT-A4",
+   "gate_result": "AT-A4 passed (approximate class, frames outside 1.0); Motion Blur read back (AT-A10)"
+  },
+  "pan_right_fx": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "whip",
+   "resolve": {
+    "type": "Pan Right",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {
+     "Motion Blur": 1,
+     "Quality": 8,
+     "Shutter Angle": 360
+    },
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "pan:right",
+    "class": "approx",
+    "measured": "[PRV] s3.3: 0.10 to 0.27 (lens bulge)"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 6,
+    "max": 10,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row pan_right_fx)",
+   "what": "a mirrored, lens-warped whip to the right with a dissolve in the middle (motion blur off by default)",
+   "use_when": "as Pan Left",
+   "amateur_when": "as Pan Left",
+   "frames30": [
+    5,
+    13
+   ],
+   "motion_blur": true,
+   "gate": "AT-A4",
+   "gate_result": "AT-A4 passed on pan_left_fx (same template family); Motion Blur reads back (AT-A10)"
+  },
+  "pan_up_fx": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "whip",
+   "resolve": {
+    "type": "Pan Up",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {
+     "Motion Blur": 1,
+     "Quality": 8,
+     "Shutter Angle": 360
+    },
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "pan:up",
+    "class": "approx",
+    "measured": "[PRV] s3.3: 0.10 to 0.27 (lens bulge)"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 6,
+    "max": 10,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row pan_up_fx)",
+   "what": "a mirrored, lens-warped whip upward with a dissolve in the middle (motion blur off by default)",
+   "use_when": "as Pan Left (vertical whip suits 9:16 and tilt shots)",
+   "amateur_when": "as Pan Left",
+   "frames30": [
+    5,
+    13
+   ],
+   "motion_blur": true,
+   "gate": "AT-A4",
+   "gate_result": "AT-A4 passed on pan_left_fx (same template family); Motion Blur reads back (AT-A10)"
+  },
+  "pan_down_fx": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "whip",
+   "resolve": {
+    "type": "Pan Down",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {
+     "Motion Blur": 1,
+     "Quality": 8,
+     "Shutter Angle": 360
+    },
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "pan:down",
+    "class": "approx",
+    "measured": "[PRV] s3.3: 0.10 to 0.27 (lens bulge)"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 6,
+    "max": 10,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row pan_down_fx)",
+   "what": "a mirrored, lens-warped whip downward with a grey dissolve in the middle (motion blur off by default)",
+   "use_when": "as Pan Left",
+   "amateur_when": "as Pan Left",
+   "frames30": [
+    5,
+    13
+   ],
+   "motion_blur": true,
+   "gate": "AT-A4",
+   "gate_result": "AT-A4 passed on pan_left_fx (same template family); Motion Blur reads back (AT-A10)"
+  },
+  "slide_left_fx": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "whip",
+   "resolve": {
+    "type": "Slide Left",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {
+     "Motion Blur": 1,
+     "Quality": 8,
+     "Shutter Angle": 360
+    },
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "slide:left",
+    "class": "close",
+    "measured": "[PRV] s3.3: 0.867"
+   },
+   "tolerance": "transition_close",
+   "frames": {
+    "min": 8,
+    "max": 12,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row slide_left_fx)",
+   "what": "an eased slide to the left with a dissolve in the middle; reads as a cut with one streaked frame at 10 frames",
+   "use_when": "a clean, eased, blurred slide between related shots (better than the simple Push for reels)",
+   "amateur_when": "unmotivated direction",
+   "frames30": [
+    5,
+    13
+   ],
+   "motion_blur": true,
+   "gate": "AT-A10 (Motion Blur macro input reads back)",
+   "gate_result": "AT-A4 passed (close class, median 0.97); AT-A10 Motion Blur read back"
+  },
+  "slide_right_fx": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "whip",
+   "resolve": {
+    "type": "Slide Right",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {
+     "Motion Blur": 1,
+     "Quality": 8,
+     "Shutter Angle": 360
+    },
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "slide:right",
+    "class": "close",
+    "measured": "[PRV] s3.3: 0.871"
+   },
+   "tolerance": "transition_close",
+   "frames": {
+    "min": 8,
+    "max": 12,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row slide_right_fx)",
+   "what": "an eased slide to the right with a dissolve in the middle; reads as a cut with one streaked frame at 10 frames",
+   "use_when": "as Slide Left",
+   "amateur_when": "as Slide Left",
+   "frames30": [
+    5,
+    13
+   ],
+   "motion_blur": true,
+   "gate": "AT-A10 (Motion Blur macro input reads back)",
+   "gate_result": "AT-A10 Motion Blur reads back on Slide Left (same template family)"
+  },
+  "slide_up_fx": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "whip",
+   "resolve": {
+    "type": "Slide Up",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {
+     "Motion Blur": 1,
+     "Quality": 8,
+     "Shutter Angle": 360
+    },
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "slide:up",
+    "class": "approx",
+    "measured": "[PRV] s3.3: 0.516"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 12,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row slide_up_fx)",
+   "what": "an eased slide upward with a dissolve in the middle; reads as a cut with one streaked frame at 10 frames",
+   "use_when": "as Slide Left",
+   "amateur_when": "as Slide Left",
+   "frames30": [
+    5,
+    13
+   ],
+   "motion_blur": true,
+   "gate": "AT-A10 (Motion Blur macro input reads back)",
+   "gate_result": "AT-A10 Motion Blur reads back on Slide Left (same template family)"
+  },
+  "slide_down_fx": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "whip",
+   "resolve": {
+    "type": "Slide Down",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {
+     "Motion Blur": 1,
+     "Quality": 8,
+     "Shutter Angle": 360
+    },
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "slide:down",
+    "class": "approx",
+    "measured": "[PRV] s3.3: 0.521"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 12,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row slide_down_fx)",
+   "what": "an eased slide downward with a dissolve in the middle; at 10 frames it reads as a cut with one streaked frame (motion blur off by default)",
+   "use_when": "as Slide Left",
+   "amateur_when": "as Slide Left",
+   "frames30": [
+    5,
+    13
+   ],
+   "motion_blur": true,
+   "gate": "AT-A10 (Motion Blur macro input reads back)",
+   "gate_result": "AT-A10 Motion Blur reads back on Slide Left (same template family)"
+  },
+  "crash_zoom_fx": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "zoom",
+   "resolve": {
+    "type": "Crash Zoom",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {
+     "Motion Blur": 1,
+     "Quality": 8,
+     "Shutter Angle": 360
+    },
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "zoom_in",
+    "class": "approx",
+    "measured": "[PRV] s3.3: 0.628"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 12,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row crash_zoom_fx)",
+   "what": "a fast zoom blur through the centre from A into B (motion blur off by default)",
+   "use_when": "a punch through into a detail or a new place on a hit (sport, hype, gym, food reveal)",
+   "amateur_when": "on calm content; with a quiet music moment",
+   "frames30": [
+    7,
+    16
+   ],
+   "motion_blur": true,
+   "gate": "AT-A4",
+   "gate_result": "AT-A4 passed (approximate class); Motion Blur read back (AT-A10)"
+  },
+  "zoom_in_fx": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "zoom",
+   "resolve": {
+    "type": "Zoom In",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {
+     "Motion Blur": 1,
+     "Quality": 8,
+     "Shutter Angle": 360
+    },
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "zoom_in",
+    "class": "close",
+    "measured": "[PRV] s3.3: 0.968"
+   },
+   "tolerance": "transition_close",
+   "frames": {
+    "min": 8,
+    "max": 12,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row zoom_in_fx)",
+   "what": "A pushes in slightly while it dissolves to B (mild)",
+   "use_when": "a push into the next shot",
+   "amateur_when": "repeated on every cut",
+   "frames30": [
+    7,
+    16
+   ],
+   "motion_blur": true,
+   "gate": "AT-A10 (Motion Blur macro input reads back)",
+   "gate_result": "AT-A10 Motion Blur read back on Zoom In"
+  },
+  "zoom_in_and_out_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "zoom",
+   "resolve": {
+    "type": "Zoom In and Out",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {
+     "Motion Blur": 1,
+     "Quality": 8,
+     "Shutter Angle": 360
+    },
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:hblur",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.106"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 12,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row zoom_in_and_out_fx)",
+   "what": "A zooms while it dissolves into B, which settles back (mild)",
+   "use_when": "a zoom punch with a pull-out of the next shot",
+   "amateur_when": "repeated on every cut",
+   "frames30": [
+    7,
+    16
+   ],
+   "motion_blur": true,
+   "brief_ok": true,
+   "refuse": "zoom_in_and_out_fx is a P2 transition (Zoom In and Out): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "camera_shake_fx": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "glitch",
+   "resolve": {
+    "type": "Camera Shake",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {
+     "Motion Blur": 1,
+     "Quality": 8,
+     "Shutter Angle": 360
+    },
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "dissolve",
+    "class": "approx",
+    "measured": "[PRV] s3.3: 0.537 (random noise)"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 6,
+    "max": 12,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head",
+     "cinematic_montage"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row camera_shake_fx)",
+   "what": "a shake with RGB split around a switch in the middle",
+   "use_when": "impact, a bass hit, a drop, action",
+   "amateur_when": "on calm, luxury or talking content",
+   "frames30": [
+    2,
+    8
+   ],
+   "motion_blur": true,
+   "gate": "AT-A10 (Motion Blur macro input reads back)",
+   "gate_result": "AT-A10 Motion Blur read back on Camera Shake"
+  },
+  "glitch_fx": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "glitch",
+   "resolve": {
+    "type": "Glitch",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "dissolve",
+    "class": "approx",
+    "measured": "[PRV] s3.3: 0.397 (random noise)"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 4,
+    "max": 8,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head",
+     "cinematic_montage"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row glitch_fx)",
+   "what": "a warped, displaced A with B rising from the bottom in a band",
+   "use_when": "tech, gaming, music with glitchy sound design, a 'signal' reveal",
+   "amateur_when": "brand work that is not tech; long durations; check photosensitive QC",
+   "frames30": [
+    2,
+    8
+   ]
+  },
+  "block_glitch_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "glitch",
+   "resolve": {
+    "type": "Block Glitch",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:circleclose",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.234"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 4,
+    "max": 8,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head",
+     "cinematic_montage"
+    ]
+   },
+   "flash_risk": true,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row block_glitch_fx)",
+   "what": "garish green and orange block glitch frames over a hard switch (flash risk)",
+   "use_when": "as Glitch, harder",
+   "amateur_when": "anywhere near the flash limit: it flashed 5 opposing luminance changes in 10 frames on the test clips",
+   "frames30": [
+    2,
+    8
+   ],
+   "brief_ok": true,
+   "refuse": "block_glitch_fx is a P2 transition (Block Glitch): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "rgb_splitter_fx": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "glitch",
+   "resolve": {
+    "type": "RGB Splitter",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "dissolve",
+    "class": "approx",
+    "measured": "[PRV] s3.3: 0.637"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 6,
+    "max": 10,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head",
+     "cinematic_montage"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row rgb_splitter_fx)",
+   "what": "a ghosted mix with red, green and blue copies split apart",
+   "use_when": "a light chromatic hit between energetic shots",
+   "amateur_when": "on subtle pieces",
+   "frames30": [
+    2,
+    8
+   ]
+  },
+  "brightness_flash_fx": {
+   "prio": "P0",
+   "enabled": true,
+   "family": "flash",
+   "resolve": {
+    "type": "Brightness Flash",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "brightness_flash",
+    "class": "close",
+    "measured": "[PRV] s3.3: 0.992 on coded clips; AT-A4 sandbox on real footage: span median 0.89, min 0.42 (the white peak lasts a frame longer in Resolve), so close, not exact"
+   },
+   "tolerance": "transition_close",
+   "frames": {
+    "min": 4,
+    "max": 8,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row brightness_flash_fx)",
+   "what": "a flash to white in the middle (the dip to white the simple set lacks)",
+   "use_when": "a flash to white on a beat or hit (the dip to white the simple set lacks), a photo-camera flash feel",
+   "amateur_when": "several in a second (photosensitive), on dark moody pieces",
+   "frames30": [
+    2,
+    7
+   ],
+   "gate_result": "AT-A4: placed at its exact length; exact class failed, close class passes (median 0.89)"
+  },
+  "glow_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "flash",
+   "resolve": {
+    "type": "Glow",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "brightness_flash",
+    "class": "close",
+    "measured": "[PRV] s3.3: 0.957"
+   },
+   "tolerance": "transition_close",
+   "frames": {
+    "min": 8,
+    "max": 14,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row glow_fx)",
+   "what": "a bloom to white through the middle",
+   "use_when": "a bloom to white, dreamy or heavenly",
+   "amateur_when": "overuse; on skin tones",
+   "frames30": [
+    2,
+    7
+   ],
+   "brief_ok": true,
+   "refuse": "glow_fx is a P2 transition (Glow): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "stretch_blur_fx": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "zoom",
+   "resolve": {
+    "type": "Stretch Blur",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:hblur",
+    "class": "approx",
+    "measured": "[PRV] s3.3: 0.685"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 6,
+    "max": 10,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row stretch_blur_fx)",
+   "what": "a vertical stretch smear through the middle",
+   "use_when": "a speed smear between fast shots",
+   "amateur_when": "on slow shots",
+   "frames30": [
+    7,
+    16
+   ]
+  },
+  "spin_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "3d",
+   "resolve": {
+    "type": "Spin",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:rectcrop",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.2"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 10,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": true,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row spin_fx)",
+   "what": "A spins away as a card over BLACK and B spins in",
+   "use_when": "a playful 3D flip",
+   "amateur_when": "vertical reels: black shows around the spinning card (measured)",
+   "brief_ok": true,
+   "refuse": "spin_fx is a P2 transition (Spin): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "rotate_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Rotate",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {
+     "Motion Blur": 1,
+     "Quality": 8,
+     "Shutter Angle": 360
+    },
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:circleclose",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.139"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 12,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row rotate_fx)",
+   "what": "A rotates out and B rotates in around the centre (motion blur off by default)",
+   "use_when": "a spin-blur rotation between energetic shots",
+   "amateur_when": "on calm pieces",
+   "motion_blur": true,
+   "brief_ok": true,
+   "refuse": "rotate_fx is a P2 transition (Rotate): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "rotate_90_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Rotate 90",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {
+     "Motion Blur": 1,
+     "Quality": 8,
+     "Shutter Angle": 360
+    },
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:circleclose",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.12"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 12,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row rotate_90_fx)",
+   "what": "a quarter-turn spin blur through the middle",
+   "use_when": "a quick rotational whip",
+   "amateur_when": "on calm pieces",
+   "motion_blur": true,
+   "brief_ok": true,
+   "refuse": "rotate_90_fx is a P2 transition (Rotate 90): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "circle_spin_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Circle Spin",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:hblur",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.082"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 12,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row circle_spin_fx)",
+   "what": "a circular spin-blur ripple through a grey mix",
+   "use_when": "a radial spin blur",
+   "amateur_when": "overuse",
+   "brief_ok": true,
+   "refuse": "circle_spin_fx is a P2 transition (Circle Spin): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "radial_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Radial",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:circleclose",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.118"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 12,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row radial_fx)",
+   "what": "a radial spin-blur swirl through the middle",
+   "use_when": "a radial blur swirl",
+   "amateur_when": "overuse",
+   "brief_ok": true,
+   "refuse": "radial_fx is a P2 transition (Radial): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "cross_dissolve_fx": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "dissolve",
+   "resolve": {
+    "type": "Cross Dissolve",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "dissolve",
+    "class": "exact",
+    "measured": "[PRV] s3.3: 0.999"
+   },
+   "tolerance": "transition_exact",
+   "frames": {
+    "min": 8,
+    "max": 25,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row cross_dissolve_fx)",
+   "what": "the same linear dissolve as the simple one, but with a Fusion comp that can be rebuilt",
+   "use_when": "the Fusion version of the dissolve: same look, but its comp can be opened and rebuilt (the custom-transition route)",
+   "amateur_when": "as Cross Dissolve"
+  },
+  "detail_dissolve_fx": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "dissolve",
+   "resolve": {
+    "type": "Detail Dissolve",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "dissolve",
+    "class": "exact",
+    "measured": "[PRV] s3.3: 0.998"
+   },
+   "tolerance": "transition_exact",
+   "frames": {
+    "min": 10,
+    "max": 20,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row detail_dissolve_fx)",
+   "what": "a dissolve that holds detail in the middle (looks like the plain dissolve on most shots)",
+   "use_when": "a dissolve that keeps detail (textured shots)",
+   "amateur_when": "as Cross Dissolve"
+  },
+  "noise_dissolve_fx": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "dissolve",
+   "resolve": {
+    "type": "Noise Dissolve",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:vdwind",
+    "class": "close",
+    "measured": "[PRV] s3.3: 0.893"
+   },
+   "tolerance": "transition_close",
+   "frames": {
+    "min": 10,
+    "max": 20,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row noise_dissolve_fx)",
+   "what": "an organic, ink-like noisy edge carries B from the top down",
+   "use_when": "an organic, ink-like reveal",
+   "amateur_when": "on clean graphic work"
+  },
+  "luma_wipe_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "wipe",
+   "resolve": {
+    "type": "Luma Wipe",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:circleopen",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.173"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 10,
+    "max": 20,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row luma_wipe_fx)",
+   "what": "a reveal by brightness; on flat shots it reads as two dark frames of B then B",
+   "use_when": "a reveal driven by the picture's brightness",
+   "amateur_when": "unpredictable on busy shots",
+   "brief_ok": true,
+   "refuse": "luma_wipe_fx is a P2 transition (Luma Wipe): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "tunnel_of_light_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Tunnel of Light",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:fadefast",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.191"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 10,
+    "max": 16,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row tunnel_of_light_fx)",
+   "what": "a burst of light from the centre with a warp",
+   "use_when": "a light-burst reveal",
+   "amateur_when": "almost everywhere",
+   "brief_ok": true,
+   "refuse": "tunnel_of_light_fx is a P2 transition (Tunnel of Light): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "film_strip_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "3d",
+   "resolve": {
+    "type": "Film Strip",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:pixelize",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.204"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 12,
+    "max": 20,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": true,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row film_strip_fx)",
+   "what": "a desaturated film-strip frame with dark borders through the middle",
+   "use_when": "a retro film look",
+   "amateur_when": "modern brand work",
+   "brief_ok": true,
+   "refuse": "film_strip_fx is a P2 transition (Film Strip): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "box_twist_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "3d",
+   "resolve": {
+    "type": "Box Twist",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:rectcrop",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.209"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": true,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row box_twist_fx)",
+   "what": "A twists away as a card over BLACK and B twists in",
+   "use_when": "rarely; only when the look is exactly the brief (3D card twist over black)",
+   "amateur_when": "in most reels, brand and story work; 3D card twist over black",
+   "brief_ok": true,
+   "refuse": "box_twist_fx is a P2 transition (Box Twist): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "box_wipe_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "wipe",
+   "resolve": {
+    "type": "Box Wipe",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:circleopen",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.1"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row box_wipe_fx)",
+   "what": "a small soft box then a soft vertical edge, read as a quick soft cut",
+   "use_when": "rarely; only when the look is exactly the brief (a blurred box wipe)",
+   "amateur_when": "in most reels, brand and story work; a blurred box wipe",
+   "brief_ok": true,
+   "refuse": "box_wipe_fx is a P2 transition (Box Wipe): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "checker_wipe_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "wipe",
+   "resolve": {
+    "type": "Checker Wipe",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:circleclose",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.12"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row checker_wipe_fx)",
+   "what": "B appears in small checker cells",
+   "use_when": "rarely; only when the look is exactly the brief (checkerboard wipe)",
+   "amateur_when": "in most reels, brand and story work; checkerboard wipe",
+   "brief_ok": true,
+   "refuse": "checker_wipe_fx is a P2 transition (Checker Wipe): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "circles_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Circles",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:circleopen",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.107"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row circles_fx)",
+   "what": "white rings expand from the centre with B inside them",
+   "use_when": "rarely; only when the look is exactly the brief (white rings expand (graphic))",
+   "amateur_when": "in most reels, brand and story work; white rings expand (graphic)",
+   "brief_ok": true,
+   "refuse": "circles_fx is a P2 transition (Circles): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "cube_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "3d",
+   "resolve": {
+    "type": "Cube",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:rectcrop",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.198"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": true,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row cube_fx)",
+   "what": "A and B on the faces of a 3D cube turning over BLACK",
+   "use_when": "rarely; only when the look is exactly the brief (3D cube over black)",
+   "amateur_when": "in most reels, brand and story work; 3D cube over black",
+   "brief_ok": true,
+   "refuse": "cube_fx is a P2 transition (Cube): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "disarrange_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "glitch",
+   "resolve": {
+    "type": "Disarrange",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:fade",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.199"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head",
+     "cinematic_montage"
+    ]
+   },
+   "flash_risk": true,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row disarrange_fx)",
+   "what": "smeared, displaced strips with white flashes (flash risk)",
+   "use_when": "rarely; only when the look is exactly the brief (smeared strips (flashy))",
+   "amateur_when": "in most reels, brand and story work; smeared strips (flashy)",
+   "frames30": [
+    2,
+    8
+   ],
+   "brief_ok": true,
+   "refuse": "disarrange_fx is a P2 transition (Disarrange): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "drop_warp_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Drop Warp",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:circleopen",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.217"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row drop_warp_fx)",
+   "what": "a liquid blob of B grows from the centre with a warp",
+   "use_when": "rarely; only when the look is exactly the brief (liquid drop warp)",
+   "amateur_when": "in most reels, brand and story work; liquid drop warp",
+   "brief_ok": true,
+   "refuse": "drop_warp_fx is a P2 transition (Drop Warp): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "edgy_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "glitch",
+   "resolve": {
+    "type": "Edgy",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:circleclose",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.223"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head",
+     "cinematic_montage"
+    ]
+   },
+   "flash_risk": true,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row edgy_fx)",
+   "what": "a flash to glowing yellow and white edges (flash risk)",
+   "use_when": "rarely; only when the look is exactly the brief (flashing edge glow (3 opposing flashes in 10 frames measured))",
+   "amateur_when": "in most reels, brand and story work; flashing edge glow (3 opposing flashes in 10 frames measured)",
+   "frames30": [
+    2,
+    8
+   ],
+   "brief_ok": true,
+   "refuse": "edgy_fx is a P2 transition (Edgy): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "elastic_rubber_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Elastic Rubber",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:distance",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.2"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row elastic_rubber_fx)",
+   "what": "B pops in almost at once with an elastic squash",
+   "use_when": "rarely; only when the look is exactly the brief (the incoming shot bounces in at once)",
+   "amateur_when": "in most reels, brand and story work; the incoming shot bounces in at once",
+   "brief_ok": true,
+   "refuse": "elastic_rubber_fx is a P2 transition (Elastic Rubber): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "fall_and_bounce_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Fall and Bounce",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:vdwind",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.153"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row fall_and_bounce_fx)",
+   "what": "B falls in from the top over A and bounces",
+   "use_when": "rarely; only when the look is exactly the brief (the incoming shot falls in from the top and bounces)",
+   "amateur_when": "in most reels, brand and story work; the incoming shot falls in from the top and bounces",
+   "brief_ok": true,
+   "refuse": "fall_and_bounce_fx is a P2 transition (Fall and Bounce): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "flip_3d_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "3d",
+   "resolve": {
+    "type": "Flip 3D",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:rectcrop",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.122"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": true,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row flip_3d_fx)",
+   "what": "A flips over as a card over BLACK and B flips in",
+   "use_when": "rarely; only when the look is exactly the brief (3D flip over black)",
+   "amateur_when": "in most reels, brand and story work; 3D flip over black",
+   "brief_ok": true,
+   "refuse": "flip_3d_fx is a P2 transition (Flip 3D): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "fold_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Fold",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:fade",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.177"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row fold_fx)",
+   "what": "a mirrored, folded kaleidoscope look through the middle",
+   "use_when": "rarely; only when the look is exactly the brief (mirror fold)",
+   "amateur_when": "in most reels, brand and story work; mirror fold",
+   "brief_ok": true,
+   "refuse": "fold_fx is a P2 transition (Fold): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "foreground_wipe_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "wipe",
+   "resolve": {
+    "type": "Foreground Wipe",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:smoothright",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.106"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row foreground_wipe_fx)",
+   "what": "a strip of B enters from the left edge and widens",
+   "use_when": "rarely; only when the look is exactly the brief (a zoomed column wipes across)",
+   "amateur_when": "in most reels, brand and story work; a zoomed column wipes across",
+   "brief_ok": true,
+   "refuse": "foreground_wipe_fx is a P2 transition (Foreground Wipe): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "horizon_reveal_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Horizon Reveal",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:horzopen",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.253"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row horizon_reveal_fx)",
+   "what": "B enters as a tilted card that settles level",
+   "use_when": "rarely; only when the look is exactly the brief (a tilted band reveal)",
+   "amateur_when": "in most reels, brand and story work; a tilted band reveal",
+   "brief_ok": true,
+   "refuse": "horizon_reveal_fx is a P2 transition (Horizon Reveal): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "inverse_flash_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "flash",
+   "resolve": {
+    "type": "Inverse Flash",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:diagtl",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.113"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head"
+    ]
+   },
+   "flash_risk": true,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row inverse_flash_fx)",
+   "what": "one grey inverted-mix frame, then a cut (flash risk)",
+   "use_when": "rarely; only when the look is exactly the brief (an inverted flash frame)",
+   "amateur_when": "in most reels, brand and story work; an inverted flash frame",
+   "frames30": [
+    2,
+    7
+   ],
+   "brief_ok": true,
+   "refuse": "inverse_flash_fx is a P2 transition (Inverse Flash): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "logo_wipe_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "wipe",
+   "resolve": {
+    "type": "Logo Wipe",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:smoothright",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.071"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row logo_wipe_fx)",
+   "what": "a soft vertical band carrying 'Sample Text' sweeps across until its text or logo is set",
+   "use_when": "rarely; only when the look is exactly the brief (a text/logo wipe that shows 'Sample Text' until edited)",
+   "amateur_when": "in most reels, brand and story work; a text/logo wipe that shows 'Sample Text' until edited",
+   "never": true,
+   "refuse": "Logo Wipe draws 'Sample Text' until its text or logo is set by hand; the skill never places it"
+  },
+  "mosaic_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Mosaic",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:circleopen",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.126"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row mosaic_fx)",
+   "what": "one blurred mosaic frame in the middle, then B",
+   "use_when": "rarely; only when the look is exactly the brief (pixel mosaic)",
+   "amateur_when": "in most reels, brand and story work; pixel mosaic",
+   "brief_ok": true,
+   "refuse": "mosaic_fx is a P2 transition (Mosaic): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "mosaic_center_wipe_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "wipe",
+   "resolve": {
+    "type": "Mosaic Center Wipe",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:horzclose",
+    "class": "close",
+    "measured": "[PRV] s3.3: 0.914"
+   },
+   "tolerance": "transition_close",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row mosaic_center_wipe_fx)",
+   "what": "A shrinks into a mosaic-edged circle at the centre with B outside",
+   "use_when": "rarely; only when the look is exactly the brief (mosaic circle wipe)",
+   "amateur_when": "in most reels, brand and story work; mosaic circle wipe",
+   "brief_ok": true,
+   "refuse": "mosaic_center_wipe_fx is a P2 transition (Mosaic Center Wipe): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "mosaic_dissolve_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Mosaic Dissolve",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:circleopen",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.082"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row mosaic_dissolve_fx)",
+   "what": "one hexagon-mosaic mix frame in the middle, then B",
+   "use_when": "rarely; only when the look is exactly the brief (mosaic dissolve)",
+   "amateur_when": "in most reels, brand and story work; mosaic dissolve",
+   "brief_ok": true,
+   "refuse": "mosaic_dissolve_fx is a P2 transition (Mosaic Dissolve): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "mosaic_edge_wipe_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "wipe",
+   "resolve": {
+    "type": "Mosaic Edge Wipe",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:smoothright",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.113"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row mosaic_edge_wipe_fx)",
+   "what": "a mosaic-edged vertical band sweeps from left to right",
+   "use_when": "rarely; only when the look is exactly the brief (mosaic edge wipe)",
+   "amateur_when": "in most reels, brand and story work; mosaic edge wipe",
+   "brief_ok": true,
+   "refuse": "mosaic_edge_wipe_fx is a P2 transition (Mosaic Edge Wipe): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "multi_circle_wipe_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "wipe",
+   "resolve": {
+    "type": "Multi Circle Wipe",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:circleopen",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.087"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row multi_circle_wipe_fx)",
+   "what": "B grows in a circle with a ring edge from the centre",
+   "use_when": "rarely; only when the look is exactly the brief (circle wipe with rings)",
+   "amateur_when": "in most reels, brand and story work; circle wipe with rings",
+   "brief_ok": true,
+   "refuse": "multi_circle_wipe_fx is a P2 transition (Multi Circle Wipe): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "page_curl_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Page Curl",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:circleclose",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.114"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row page_curl_fx)",
+   "what": "A peels away from the bottom right corner like a page",
+   "use_when": "rarely; only when the look is exactly the brief (page curl (cliche))",
+   "amateur_when": "in most reels, brand and story work; page curl (cliche)",
+   "brief_ok": true,
+   "refuse": "page_curl_fx is a P2 transition (Page Curl): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "paint_on_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Paint On",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:distance",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.136"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row paint_on_fx)",
+   "what": "a soft diagonal paint stroke reveals B",
+   "use_when": "rarely; only when the look is exactly the brief (painted diagonal stroke)",
+   "amateur_when": "in most reels, brand and story work; painted diagonal stroke",
+   "brief_ok": true,
+   "refuse": "paint_on_fx is a P2 transition (Paint On): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "perspective_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Perspective",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:vertclose",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.168"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row perspective_fx)",
+   "what": "A swings away in perspective like a door, revealing B",
+   "use_when": "rarely; only when the look is exactly the brief (perspective swing)",
+   "amateur_when": "in most reels, brand and story work; perspective swing",
+   "brief_ok": true,
+   "refuse": "perspective_fx is a P2 transition (Perspective): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "pop_wobble_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Pop Wobble",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:distance",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.189"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row pop_wobble_fx)",
+   "what": "B pops in on the first frame and wobbles",
+   "use_when": "rarely; only when the look is exactly the brief (the incoming shot pops in at once and wobbles)",
+   "amateur_when": "in most reels, brand and story work; the incoming shot pops in at once and wobbles",
+   "brief_ok": true,
+   "refuse": "pop_wobble_fx is a P2 transition (Pop Wobble): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "pop_wobble_reverse_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Pop Wobble Reverse",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:distance",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.329"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": true,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row pop_wobble_reverse_fx)",
+   "what": "B pops in on the first frame, then A FLASHES BACK for one frame at the end (broken, do not use)",
+   "use_when": "rarely; only when the look is exactly the brief (measured: shows the incoming shot at once and FLASHES the outgoing shot on its last frame)",
+   "amateur_when": "in most reels, brand and story work; measured: shows the incoming shot at once and FLASHES the outgoing shot on its last frame",
+   "never": true,
+   "refuse": "Pop Wobble Reverse flashes the outgoing shot back for one frame at its end (measured twice, fusion/transitions/notes.md s4); never use it"
+  },
+  "posterize_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Posterize",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:fade",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.113"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row posterize_fx)",
+   "what": "a blurred, posterised mix through the middle",
+   "use_when": "rarely; only when the look is exactly the brief (posterised mix)",
+   "amateur_when": "in most reels, brand and story work; posterised mix",
+   "brief_ok": true,
+   "refuse": "posterize_fx is a P2 transition (Posterize): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "ripple_warp_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Ripple Warp",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:circleopen",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.143"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row ripple_warp_fx)",
+   "what": "a rippled, broken-edged warp from A to B",
+   "use_when": "rarely; only when the look is exactly the brief (rippled warp dissolve)",
+   "amateur_when": "in most reels, brand and story work; rippled warp dissolve",
+   "brief_ok": true,
+   "refuse": "ripple_warp_fx is a P2 transition (Ripple Warp): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "round_and_down_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "whip",
+   "resolve": {
+    "type": "Round and Down",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:fade",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.152"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row round_and_down_fx)",
+   "what": "a lens-warped whip downward with a dissolve in the middle",
+   "use_when": "rarely; only when the look is exactly the brief (warped whip down)",
+   "amateur_when": "in most reels, brand and story work; warped whip down",
+   "frames30": [
+    5,
+    13
+   ],
+   "brief_ok": true,
+   "refuse": "round_and_down_fx is a P2 transition (Round and Down): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "shape_transition_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Shape Transition",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:diagbl",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.266"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row shape_transition_fx)",
+   "what": "graphic parallelogram bars cross A, then a hard cut at the end",
+   "use_when": "rarely; only when the look is exactly the brief (graphic bars cross the outgoing shot, then a hard cut at the end)",
+   "amateur_when": "in most reels, brand and story work; graphic bars cross the outgoing shot, then a hard cut at the end",
+   "brief_ok": true,
+   "refuse": "shape_transition_fx is a P2 transition (Shape Transition): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "shash_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "glitch",
+   "resolve": {
+    "type": "Shash",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:fade",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.108"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head",
+     "cinematic_montage"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row shash_fx)",
+   "what": "TV static noise through the middle",
+   "use_when": "rarely; only when the look is exactly the brief (TV static)",
+   "amateur_when": "in most reels, brand and story work; TV static",
+   "frames30": [
+    2,
+    8
+   ],
+   "brief_ok": true,
+   "refuse": "shash_fx is a P2 transition (Shash): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "shatter_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Shatter",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:distance",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.149"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row shatter_fx)",
+   "what": "A shatters into shards that fly off, revealing B",
+   "use_when": "rarely; only when the look is exactly the brief (glass shatter)",
+   "amateur_when": "in most reels, brand and story work; glass shatter",
+   "brief_ok": true,
+   "refuse": "shatter_fx is a P2 transition (Shatter): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "slice_push_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Slice Push",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:circleclose",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.202"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row slice_push_fx)",
+   "what": "A is cut into vertical slices that push off as B arrives",
+   "use_when": "rarely; only when the look is exactly the brief (sliced push)",
+   "amateur_when": "in most reels, brand and story work; sliced push",
+   "brief_ok": true,
+   "refuse": "slice_push_fx is a P2 transition (Slice Push): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "slide_and_hold_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Slide and Hold",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:revealup",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.194"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row slide_and_hold_fx)",
+   "what": "B slides up a quarter of the frame from the bottom and holds, then cuts in",
+   "use_when": "rarely; only when the look is exactly the brief (the incoming shot slides up a quarter of the frame, holds, then cuts in)",
+   "amateur_when": "in most reels, brand and story work; the incoming shot slides up a quarter of the frame, holds, then cuts in",
+   "brief_ok": true,
+   "refuse": "slide_and_hold_fx is a P2 transition (Slide and Hold): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "three_color_flash_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "flash",
+   "resolve": {
+    "type": "Three Color Flash",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:diagbl",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.275"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head"
+    ]
+   },
+   "flash_risk": true,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row three_color_flash_fx)",
+   "what": "magenta flash frames around a switch (flash risk)",
+   "use_when": "rarely; only when the look is exactly the brief (magenta and yellow flash frames (photosensitive risk))",
+   "amateur_when": "in most reels, brand and story work; magenta and yellow flash frames (photosensitive risk)",
+   "frames30": [
+    2,
+    7
+   ],
+   "brief_ok": true,
+   "refuse": "three_color_flash_fx is a P2 transition (Three Color Flash): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "tile_wipe_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "wipe",
+   "resolve": {
+    "type": "Tile Wipe",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:circleopen",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.215"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": true,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row tile_wipe_fx)",
+   "what": "the picture breaks into many small repeated tiles, then B",
+   "use_when": "rarely; only when the look is exactly the brief (tiled wipe)",
+   "amateur_when": "in most reels, brand and story work; tiled wipe",
+   "brief_ok": true,
+   "refuse": "tile_wipe_fx is a P2 transition (Tile Wipe): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "vee_wipe_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "wipe",
+   "resolve": {
+    "type": "Vee Wipe",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:circleclose",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.106"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row vee_wipe_fx)",
+   "what": "a V-shaped edge with a coloured glow sweeps from left to right",
+   "use_when": "rarely; only when the look is exactly the brief (a V-shaped wipe)",
+   "amateur_when": "in most reels, brand and story work; a V-shaped wipe",
+   "brief_ok": true,
+   "refuse": "vee_wipe_fx is a P2 transition (Vee Wipe): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "warp_fx": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "other",
+   "resolve": {
+    "type": "Warp",
+    "category": "fusion",
+    "build": "transition",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "xfade:circleopen",
+    "class": "approx",
+    "measured": "[TR] s5 closest xfade at distance 0.187"
+   },
+   "tolerance": "transition_approx",
+   "frames": {
+    "min": 8,
+    "max": 15,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row warp_fx)",
+   "what": "a swirl warp through the middle",
+   "use_when": "rarely; only when the look is exactly the brief (swirl warp)",
+   "amateur_when": "in most reels, brand and story work; swirl warp",
+   "brief_ok": true,
+   "refuse": "warp_fx is a P2 transition (Warp): it reads as dated or amateur in reels; give the transition \"look_is_brief\": true when the brief asks for exactly this look"
+  },
+  "custom_whip": {
+   "prio": "P0",
+   "enabled": true,
+   "family": "whip",
+   "resolve": {
+    "type": "Cross Dissolve",
+    "category": "fusion",
+    "build": "rebuild_whip",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "whip_r1",
+    "class": "exact",
+    "measured": "[TR] s5: 0.958 to 0.997 coded clips, 0.994 to 0.998 real footage"
+   },
+   "tolerance": "transition_exact",
+   "frames": {
+    "min": 6,
+    "max": 10,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row custom_whip)",
+   "what": "both pictures travel together on one eased offset (slow, fast, slow) with a 360-degree motion blur smear; A leaves and B arrives in the chosen direction, no mirror, no lens warp",
+   "use_when": "a clean whip pan with no mirror or lens warp: two pictures on one eased offset with a 360-degree motion blur, any of 4 directions (all 4 rendered); the reel standard for energetic cuts",
+   "amateur_when": "without a motivating camera move or on slow pieces; more than 2 or 3 per 15 s",
+   "frames30": [
+    5,
+    13
+   ]
+  },
+  "custom_zoom_overlap": {
+   "prio": "P0",
+   "enabled": true,
+   "family": "zoom",
+   "resolve": {
+    "type": "Cross Dissolve",
+    "category": "fusion",
+    "build": "rebuild_zoom",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "zoom_r1b",
+    "class": "exact",
+    "measured": "[TR] s6: 0.967 to 0.995"
+   },
+   "tolerance": "transition_exact",
+   "frames": {
+    "min": 8,
+    "max": 12,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row custom_zoom_overlap)",
+   "what": "A zooms in with an ease-in to `peak` over the first half, a short mix at the middle, B zooms out from `peak` to full frame with an ease-out; zoom blur from the Transforms' motion blur",
+   "use_when": "a zoom punch through the cut into a detail or a new place on a hit (sport, hype, food, fashion, travel) when both shots have handles; aim `point` at the subject",
+   "amateur_when": "on calm content; into an empty part of the frame; more than a few per piece; peak above about 3 (soft, pixelated)",
+   "frames30": [
+    7,
+    16
+   ]
+  },
+  "custom_zoom_through": {
+   "prio": "P0",
+   "enabled": true,
+   "family": "zoom",
+   "resolve": {
+    "type": null,
+    "category": null,
+    "build": "clip_pair",
+    "macro_inputs": {},
+    "handles": "none"
+   },
+   "preview": {
+    "recipe": "motion",
+    "class": "close",
+    "measured": "[TR] s6 R2: 0.97 to 0.997 (perspective from the motion keys); sandbox pipeline run with the 360-degree motion blur on: the blurred middle frames 0.918 and 0.930 against the preview, so close (span median), not exact per frame"
+   },
+   "tolerance": "transition_close",
+   "frames": {
+    "min": 4,
+    "max": 8,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row custom_zoom_through)",
+   "what": "A zooms in over its last n frames and B zooms out over its first n frames (linear keys) with motion blur; a plain cut between, no overlap",
+   "use_when": "a zoom punch through the cut (sport, hype, food, fashion) when the shots have NO handles, since it needs no overlap",
+   "amateur_when": "on calm content; zooming into a face's edge; more than a few per piece",
+   "frames30": [
+    7,
+    16
+   ],
+   "gate_result": "sandbox pipeline: placed as a clip pair on both items, keys read back; blurred frames 0.92 to 0.93 per frame, so the span median is checked"
+  },
+  "audio_xfade_plus3": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "audio",
+   "resolve": {
+    "type": "Cross Fade +3 dB",
+    "category": "audio",
+    "build": "audio",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "acrossfade:squ",
+    "class": "exact",
+    "measured": "[TR] s7: identical to 0.1 dB"
+   },
+   "tolerance": "transition_exact",
+   "frames": {
+    "min": 2,
+    "max": 12,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row audio_xfade_plus3)",
+   "what": "equal-power cross fade: gains sqrt(1-p) and sqrt(p), -3 dB each at the middle",
+   "use_when": "the default audio crossfade between different sounds (two music sections, room tones, ambiences): equal power keeps the loudness even",
+   "amateur_when": "between two pieces of the SAME continuous sound (it bumps up about 3 dB in the middle)"
+  },
+  "audio_xfade_0db": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "audio",
+   "resolve": {
+    "type": "Cross Fade 0 dB",
+    "category": "audio",
+    "build": "audio",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "acrossfade:tri",
+    "class": "exact",
+    "measured": "[TR] s7: identical to 0.1 dB"
+   },
+   "tolerance": "transition_exact",
+   "frames": {
+    "min": 2,
+    "max": 25,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row audio_xfade_0db)",
+   "what": "linear cross fade: gains 1-p and p, -6 dB each at the middle",
+   "use_when": "joining two pieces of the same sound (a split music clip, the skill's ducking pieces): linear sums flat",
+   "amateur_when": "between unrelated sounds (dips in the middle)"
+  },
+  "audio_xfade_minus3": {
+   "prio": "P2",
+   "enabled": false,
+   "family": "audio",
+   "resolve": {
+    "type": "Cross Fade -3 dB",
+    "category": "audio",
+    "build": "audio",
+    "macro_inputs": {},
+    "handles": "measured"
+   },
+   "preview": {
+    "recipe": "acrossfade:minus3",
+    "class": "close",
+    "measured": "[TR] s7: within 0.4 dB"
+   },
+   "tolerance": "transition_close",
+   "frames": {
+    "min": 4,
+    "max": 12,
+    "at_fps": 25
+   },
+   "genres": {
+    "avoid": []
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "fusion/transitions/notes.md s4 to s10 (catalog.json row audio_xfade_minus3)",
+   "what": "a dipping cross fade: gains (1-p)^1.5 and p^1.5, -9 dB each at the middle",
+   "use_when": "a deliberate dip between two sounds",
+   "amateur_when": "as a default (it dips)",
+   "brief_ok": false,
+   "refuse": "audio_xfade_minus3 is not used by the build"
+  },
+  "whip_pair": {
+   "prio": "P0",
+   "enabled": true,
+   "family": "whip",
+   "resolve": {
+    "type": null,
+    "category": null,
+    "build": "clip_pair",
+    "macro_inputs": {},
+    "handles": "none"
+   },
+   "preview": {
+    "recipe": "motion",
+    "class": "close",
+    "measured": "motion table through perspective with an 8-sample shutter; one eased travel across both shots (fastest move across the cut, one key past the cut on each side so the motion blur never rests). Sandbox render (fix pass 2, t1 8-frame whip up): span median 0.976, min 0.844 against the preview at 36x64; Resolve's blur is smoother than the 8 samples, so close (span median), not exact"
+   },
+   "tolerance": "transition_close",
+   "frames": {
+    "min": 7,
+    "max": 9,
+    "at_fps": 25
+   },
+   "frames30": [
+    5,
+    13
+   ],
+   "genres": {
+    "avoid": [
+     "premium_brand",
+     "talking_head"
+    ]
+   },
+   "flash_risk": false,
+   "black_card": false,
+   "verified": "sandbox",
+   "source": "FUSION_PLAN.md 1.5; fusion/fusion_api/notes.md s4 whip; fusion/reel_effects/notes.md 4.4",
+   "what": "clip comps: the outgoing shot whips out over its last frames (accelerating), the incoming whips in from the other side (decelerating); a plain cut between, no handles needed",
+   "use_when": "the whip when the shots have no handles",
+   "amateur_when": "as custom_whip",
+   "out_ms": 130,
+   "in_ms": 170,
+   "gate_result": "fix pass 2: rendered in the sandbox; sharpness falls steadily into the cut and rises steadily out of it (0.62, 0.46, 0.27, 0.16 | 0.19, 0.29, 0.35, 0.35, 0.48, 0.81, 1.20; the shots at rest 0.7 and 1.3), no frame at rest in the middle (the first version keyed both apex frames one frame size away, which with wrap edges is the picture at rest)"
+  }
+ },
+ "fx": {
+  "punch": {
+   "prio": "P0",
+   "enabled": true,
+   "family": "zoom",
+   "stylized": false,
+   "build": "motion",
+   "params": {
+    "zoom": [
+     1.15,
+     1.3,
+     1.25
+    ],
+    "ms": [
+     300,
+     500,
+     400
+    ],
+    "ease": "in_out_cubic",
+    "point": [
+     0.5,
+     0.5
+    ]
+   },
+   "eases": [
+    "in_out_cubic",
+    "out_cubic",
+    "snap",
+    "in_out_sine",
+    "linear"
+   ],
+   "preview": {
+    "recipe": "perspective",
+    "class": "exact"
+   },
+   "tolerance": "push_zoom_keyed",
+   "frames30": [
+    9,
+    15
+   ],
+   "event": true,
+   "source": "fusion/reel_effects/notes.md 4.2 zoom_smooth; FUSION_PLAN.md 1.3",
+   "what": "an eased zoom that stays (put it on the emphasis word)"
+  },
+  "bump": {
+   "prio": "P0",
+   "enabled": true,
+   "family": "zoom",
+   "stylized": false,
+   "build": "motion",
+   "params": {
+    "peak": [
+     1.05,
+     1.12,
+     1.08
+    ],
+    "attack_ms": [
+     60,
+     120,
+     80
+    ],
+    "release_ms": [
+     200,
+     400,
+     300
+    ],
+    "point": [
+     0.5,
+     0.5
+    ]
+   },
+   "preview": {
+    "recipe": "perspective",
+    "class": "exact"
+   },
+   "tolerance": "push_zoom_keyed",
+   "frames30": [
+    5,
+    16
+   ],
+   "event": true,
+   "source": "fusion/reel_effects/notes.md 4.2 punch_bump",
+   "what": "a beat pulse: quick up (out_quad) to the peak ON the beat, eased back (out_cubic)"
+  },
+  "snap": {
+   "prio": "P0",
+   "enabled": true,
+   "family": "zoom",
+   "stylized": false,
+   "build": "motion",
+   "params": {
+    "level": [
+     1.15,
+     1.3,
+     1.2
+    ],
+    "overshoot": [
+     0.03,
+     0.05,
+     0.04
+    ],
+    "settle_ms": [
+     120,
+     200,
+     160
+    ],
+    "point": [
+     0.5,
+     0.5
+    ]
+   },
+   "preview": {
+    "recipe": "perspective",
+    "class": "exact"
+   },
+   "tolerance": "push_zoom_keyed",
+   "frames30": [
+    4,
+    7
+   ],
+   "event": true,
+   "source": "fusion/reel_effects/notes.md 4.2 snap_settle",
+   "what": "an impact zoom: level plus the overshoot on the hit, settling to the level, which stays"
+  },
+  "push": {
+   "prio": "P0",
+   "enabled": true,
+   "family": "zoom",
+   "stylized": false,
+   "build": "motion",
+   "params": {
+    "from": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "to": [
+     1.03,
+     1.08,
+     1.06
+    ],
+    "ease": "in_out_sine",
+    "point": [
+     0.5,
+     0.5
+    ]
+   },
+   "preview": {
+    "recipe": "perspective",
+    "class": "exact"
+   },
+   "tolerance": "push_zoom_keyed",
+   "frames30": [
+    60,
+    180
+   ],
+   "event": true,
+   "source": "fusion/reel_effects/notes.md 4.2 push; preview_fidelity/notes.md s4",
+   "what": "a slow push over the shot (2 to 6 s), in_out_sine",
+   "gate_result": "integration build on a still end card: the push matched the preview at 0.9997 median against 0.88 for the card without it"
+  },
+  "shake": {
+   "prio": "P1",
+   "enabled": true,
+   "gate": "AT-A2",
+   "family": "shake",
+   "stylized": true,
+   "build": "motion",
+   "params": {
+    "amp": [
+     0.008,
+     0.03,
+     0.02
+    ],
+    "rot_deg": [
+     0.0,
+     1.5,
+     0.6
+    ],
+    "freq_hz": [
+     6.0,
+     12.0,
+     9.0
+    ],
+    "decay_ms": [
+     200,
+     450,
+     320
+    ],
+    "seed": 7
+   },
+   "preview": {
+    "recipe": "perspective",
+    "class": "exact"
+   },
+   "tolerance": "shake_keyed_path",
+   "frames30": [
+    8,
+    24
+   ],
+   "event": true,
+   "source": "fusion/reel_effects/notes.md 4.3 shake; preview_fidelity/notes.md s6",
+   "what": "a seeded, decaying shake keyed per frame (Center through an XYPath, Angle), with the cover zoom zoom_to_hide asks for",
+   "gate_result": "AT-A2 passed: keyed path correlated 0.97 with the preview, fitted shift within 0.5 px"
+  },
+  "flash": {
+   "prio": "P1",
+   "enabled": true,
+   "gate": "AT-A8",
+   "family": "flash",
+   "stylized": true,
+   "build": "accents",
+   "params": {
+    "peak": [
+     0.6,
+     0.85,
+     0.8
+    ],
+    "up": [
+     0,
+     1,
+     1
+    ],
+    "down_ms": [
+     60,
+     170,
+     100
+    ]
+   },
+   "preview": {
+    "recipe": "lerp_white",
+    "class": "exact"
+   },
+   "tolerance": "transition_exact",
+   "aux": "relative_level",
+   "frames30": [
+    2,
+    7
+   ],
+   "event": true,
+   "source": "fusion/reel_effects/notes.md 4.7 flash",
+   "what": "a white flash peaking ON the event frame (BrightnessContrast Gain 1 - v, Brightness v)",
+   "gate_result": "AT-A8 passed: the flash frame's level rose 0.51 to 0.90"
+  },
+  "rgb_split": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "rgb_split",
+   "stylized": true,
+   "build": "accents",
+   "params": {
+    "px": [
+     0.005,
+     0.02,
+     0.012
+    ],
+    "ms": [
+     60,
+     250,
+     130
+    ],
+    "seed": 3
+   },
+   "preview": {
+    "recipe": "rgbashift",
+    "class": "exact"
+   },
+   "tolerance": "rgb_split",
+   "aux": "rb_offset_px",
+   "frames30": [
+    2,
+    8
+   ],
+   "event": true,
+   "source": "fusion/reel_effects/notes.md 4.8 rgb_split; fusion_api/notes.md s4 rgb_split (ChannelBooleans route)",
+   "what": "red right and blue left by px of the width, alternating, last frame 0",
+   "gate_result": "AT-A8 passed: 24 px measured for 12 px keyed on each side"
+  },
+  "glitch": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "glitch",
+   "stylized": true,
+   "build": "accents",
+   "params": {
+    "px": [
+     0.005,
+     0.02,
+     0.012
+    ],
+    "ms": [
+     60,
+     270,
+     200
+    ],
+    "slices": [
+     2,
+     6,
+     4
+    ],
+    "hold": 2,
+    "seed": 3
+   },
+   "preview": {
+    "recipe": "rgbashift_held",
+    "class": "approx"
+   },
+   "tolerance": "glitch",
+   "frames30": [
+    2,
+    8
+   ],
+   "event": true,
+   "source": "fusion/fusion_api/notes.md s4 glitch",
+   "what": "a held RGB split jumping every 2 frames plus horizontal bands (seeded)",
+   "gate_result": "integration build: the bands and the RGB split render on a real clip (correlation 0.92 to 0.95 against the clip without it on the glitch frames); the preview draws only the split, so the span is not pixel-checked"
+  },
+  "light_leak": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "light_leak",
+   "stylized": true,
+   "build": "accents",
+   "params": {
+    "ms": [
+     500,
+     1500,
+     1000
+    ],
+    "peak": [
+     0.3,
+     0.8,
+     0.55
+    ],
+    "color": "#FF8A3D",
+    "seed": 11
+   },
+   "preview": {
+    "recipe": "light_leak",
+    "class": "approx"
+   },
+   "tolerance": "light_leak",
+   "aux": "relative_level",
+   "frames30": [
+    15,
+    45
+   ],
+   "event": true,
+   "source": "fusion/reel_effects/notes.md 4.9; fusion_api/notes.md s4 light_leak",
+   "what": "a warm FastNoise leak screened over the picture, envelope keyed",
+   "gate_result": "integration build: the in-clip leak renders and raised the mean level by 22 of 255 (the preview by 21.7); its shape is approximate in the preview; fix pass 2: a leak anchored on cut_in now keeps its visible half (it was dropped): the render warms the shot's first frame by +27 red of 255 (the preview +36) and fades to 0 over 9 frames, as planned"
+  },
+  "ramp": {
+   "prio": "P0",
+   "enabled": true,
+   "family": "retime",
+   "stylized": false,
+   "build": "retime",
+   "params": {
+    "ease_ms": [
+     200,
+     500,
+     300
+    ],
+    "fast": [
+     2.0,
+     15.0
+    ],
+    "slow": [
+     0.2,
+     0.6
+    ]
+   },
+   "preview": {
+    "recipe": "ramp_setpts",
+    "class": "exact"
+   },
+   "tolerance": "speed_ramp",
+   "event": true,
+   "source": "fusion/reel_effects/notes.md 4.5; preview_fidelity/notes.md s5",
+   "what": "a TimeStretcher speed ramp with SourceTime keyed on whole source frames"
+  },
+  "freeze": {
+   "prio": "P1",
+   "enabled": true,
+   "family": "retime",
+   "stylized": false,
+   "build": "retime",
+   "params": {
+    "hold_s": [
+     0.6,
+     2.0,
+     1.0
+    ]
+   },
+   "preview": {
+    "recipe": "ramp_setpts",
+    "class": "exact"
+   },
+   "tolerance": "speed_ramp",
+   "event": true,
+   "source": "fusion/reel_effects/notes.md 4.6 (flat TimeStretcher keys)",
+   "what": "a held frame inside the item (flat SourceTime keys)"
+  },
+  "speed_warp": {
+   "prio": "P0",
+   "enabled": true,
+   "family": "retime",
+   "stylized": false,
+   "build": "retime_process",
+   "params": {
+    "speed": [
+     0.2,
+     1.0
+    ]
+   },
+   "preview": {
+    "recipe": "nearest",
+    "class": "approx"
+   },
+   "tolerance": "speed_warp",
+   "event": false,
+   "source": "fusion/resolve_fx/notes.md s6",
+   "what": "Speed Warp retime (RetimeProcess 3, MotionEstimation 5) on a constant slow speed"
+  }
+ },
+ "anims": {
+  "pop_highlight": {
+   "prio": "P0",
+   "enabled": true,
+   "kind": "caption",
+   "bounce": true,
+   "source": "fusion/animated_text/notes.md s5",
+   "params": {
+    "scale_ms": [
+     [
+      0,
+      0.85
+     ],
+     [
+      100,
+      1.04
+     ],
+     [
+      160,
+      1.0
+     ]
+    ],
+    "active": {
+     "color": "#FFD93D"
+    }
+   },
+   "look_hint": {
+    "font": "Arial",
+    "style": "Bold",
+    "case": "as_written",
+    "em_px": 84,
+    "stroke_em": 0.04,
+    "y": 0.56,
+    "words": [
+     1,
+     4
+    ]
+   }
+  },
+  "word_pop": {
+   "prio": "P0",
+   "enabled": true,
+   "kind": "caption",
+   "bounce": true,
+   "source": "fusion/animated_text/notes.md s5",
+   "params": {
+    "reveal": "words",
+    "word_scale_ms": [
+     [
+      0,
+      0.9
+     ],
+     [
+      100,
+      1.02
+     ],
+     [
+      160,
+      1.0
+     ]
+    ],
+    "word_spacing": 1.3
+   },
+   "look_hint": {
+    "font": "Arial",
+    "style": "Bold",
+    "case": "as_written",
+    "em_px": 84,
+    "stroke_em": 0.04,
+    "y": 0.56,
+    "words": [
+     1,
+     4
+    ]
+   }
+  },
+  "keyword": {
+   "prio": "P0",
+   "enabled": true,
+   "kind": "caption",
+   "bounce": false,
+   "source": "fusion/animated_text/notes.md s5",
+   "params": {
+    "keyword": {
+     "color": "#FFD93D",
+     "scale": 1.15,
+     "reflow": true
+    }
+   },
+   "look_hint": {
+    "font": "Arial",
+    "style": "Bold",
+    "em_px": 84,
+    "stroke_em": 0.04,
+    "y": 0.56
+   }
+  },
+  "clean_box": {
+   "prio": "P0",
+   "enabled": true,
+   "kind": "caption",
+   "bounce": false,
+   "source": "fusion/animated_text/notes.md s5",
+   "params": {
+    "fade_in_ms": 120
+   },
+   "look_hint": {
+    "font": "Arial",
+    "style": "Bold",
+    "em_px": 64,
+    "box_opacity": 0.65,
+    "y": 0.56
+   }
+  },
+  "box_karaoke": {
+   "prio": "P1",
+   "enabled": true,
+   "kind": "caption",
+   "bounce": true,
+   "source": "fusion/animated_text/notes.md s5",
+   "params": {
+    "active": {
+     "box": "#7C3AED",
+     "scale_ms": [
+      [
+       0,
+       1.0
+      ],
+      [
+       80,
+       1.12
+      ],
+      [
+       160,
+       1.06
+      ]
+     ],
+     "pad_em": [
+      0.18,
+      0.1
+     ],
+     "round": 0.35
+    },
+    "word_spacing": 1.5
+   },
+   "look_hint": {
+    "font": "Arial Black",
+    "case": "upper",
+    "em_px": 66,
+    "stroke_em": 0.06,
+    "y": 0.6,
+    "words": [
+     2,
+     3
+    ]
+   }
+  },
+  "super_pop": {
+   "prio": "P0",
+   "enabled": true,
+   "kind": "title",
+   "bounce": true,
+   "source": "fusion/animated_text/notes.md s5",
+   "params": {
+    "scale_ms": [
+     [
+      0,
+      0.0
+     ],
+     [
+      160,
+      1.15
+     ],
+     [
+      280,
+      0.96
+     ],
+     [
+      360,
+      1.0
+     ]
+    ]
+   },
+   "look_hint": {
+    "font": "brand",
+    "case": "upper",
+    "em_px": 88,
+    "y": 0.45
+   }
+  },
+  "slide_hook": {
+   "prio": "P0",
+   "enabled": true,
+   "kind": "title",
+   "bounce": false,
+   "source": "fusion/animated_text/notes.md s5",
+   "params": {
+    "slide": {
+     "dy_px": 40,
+     "ms": 320,
+     "ease": "out_cubic"
+    },
+    "fade_in_ms": 200,
+    "fade_out_ms": 160
+   },
+   "look_hint": {
+    "font": "brand",
+    "case": "as_written",
+    "em_px": 96,
+    "y": 0.2
+   }
+  },
+  "typewriter": {
+   "prio": "P0",
+   "enabled": true,
+   "kind": "title",
+   "bounce": false,
+   "source": "fusion/animated_text/notes.md s5",
+   "params": {
+    "reveal": "chars",
+    "cps": 20
+   },
+   "look_hint": {
+    "font": "Arial",
+    "style": "Bold",
+    "em_px": 84,
+    "y": 0.22
+   }
+  },
+  "fade": {
+   "prio": "P0",
+   "enabled": true,
+   "kind": "any",
+   "bounce": false,
+   "source": "FUSION_PLAN.md 1.2",
+   "params": {
+    "fade_in_ms": 160,
+    "fade_out_ms": 120
+   }
+  }
+ },
+ "genres": {
+  "premium_brand": {
+   "per10s": 1.5,
+   "max_families": 1,
+   "zoom_max": 1.1,
+   "bounce_ok": false,
+   "banned": [
+    "glitch",
+    "rgb_split",
+    "emoji",
+    "flash",
+    "bump",
+    "spin",
+    "progress_bar",
+    "shake"
+   ]
+  },
+  "performance_ad": {
+   "per10s": 4.0,
+   "max_families": 3,
+   "zoom_max": 1.35,
+   "bounce_ok": true,
+   "banned": [
+    "spin"
+   ]
+  },
+  "creator_reel": {
+   "per10s": 5.0,
+   "max_families": 3,
+   "zoom_max": 1.35,
+   "bounce_ok": true,
+   "banned": []
+  },
+  "talking_head": {
+   "per10s": 3.0,
+   "max_families": 2,
+   "zoom_max": 1.3,
+   "bounce_ok": true,
+   "banned": [
+    "glitch",
+    "rgb_split",
+    "flash",
+    "light_leak",
+    "film_burn",
+    "spin"
+   ]
+  },
+  "music_montage": {
+   "per10s": 8.0,
+   "max_families": 3,
+   "zoom_max": 1.5,
+   "bounce_ok": true,
+   "banned": []
+  },
+  "cinematic_montage": {
+   "per10s": 2.5,
+   "max_families": 2,
+   "zoom_max": 1.15,
+   "bounce_ok": false,
+   "banned": [
+    "glitch",
+    "rgb_split",
+    "emoji",
+    "bump",
+    "progress_bar",
+    "spin"
+   ]
+  }
+ },
+ "preset_genre": {
+  "reels_talking_head": "creator_reel",
+  "reels_montage_music": "music_montage",
+  "shorts_highlight": "talking_head",
+  "podcast_clip": "talking_head",
+  "youtube_long": "talking_head",
+  "interview_doc": "premium_brand",
+  "ad_15": "performance_ad",
+  "ad_30": "performance_ad",
+  "product_demo": "performance_ad",
+  "wedding_highlight": "cinematic_montage",
+  "travel_montage": "cinematic_montage",
+  "music_video": "music_montage"
+ },
+ "tolerance": {
+  "cut": {
+   "min_corr": 0.6,
+   "scope": "frame",
+   "mark": false,
+   "aux": null
+  },
+  "push_zoom_keyed": {
+   "min_corr": 0.95,
+   "scope": "frame",
+   "mark": false,
+   "aux": null
+  },
+  "speed_ramp": {
+   "min_corr": 0.9,
+   "scope": "frame",
+   "mark": false,
+   "aux": null
+  },
+  "speed_warp": {
+   "min_corr": 0.6,
+   "scope": "frame",
+   "mark": true,
+   "aux": null
+  },
+  "transition_exact": {
+   "min_corr": 0.9,
+   "scope": "frame",
+   "mark": false,
+   "aux": "relative_level"
+  },
+  "transition_close": {
+   "min_corr": 0.75,
+   "scope": "span_median",
+   "mark": false,
+   "aux": null
+  },
+  "transition_approx": {
+   "min_corr": null,
+   "scope": "outside_frames",
+   "mark": true,
+   "aux": "differs_from_both_sides"
+  },
+  "shake_random": {
+   "min_corr": 0.4,
+   "scope": "frame",
+   "mark": true,
+   "aux": "frame_to_frame_shift"
+  },
+  "shake_keyed_path": {
+   "min_corr": 0.9,
+   "scope": "frame",
+   "mark": false,
+   "aux": null
+  },
+  "motion_blur": {
+   "min_corr": 0.6,
+   "scope": "frame",
+   "mark": true,
+   "aux": "hf_energy"
+  },
+  "rgb_split": {
+   "min_corr": 0.9,
+   "scope": "frame",
+   "mark": false,
+   "aux": "rb_offset_px"
+  },
+  "glitch": {
+   "min_corr": null,
+   "scope": "outside_frames",
+   "mark": true,
+   "aux": null
+  },
+  "glow": {
+   "min_corr": 0.9,
+   "scope": "frame",
+   "mark": true,
+   "aux": "relative_level"
+  },
+  "blur": {
+   "min_corr": 0.9,
+   "scope": "frame",
+   "mark": false,
+   "aux": "hf_energy"
+  },
+  "grain": {
+   "min_corr": 0.9,
+   "scope": "frame",
+   "mark": false,
+   "aux": "hf_energy"
+  },
+  "vignette": {
+   "min_corr": 0.9,
+   "scope": "frame",
+   "mark": false,
+   "aux": "corner_ratio"
+  },
+  "light_leak": {
+   "min_corr": 0.8,
+   "scope": "frame",
+   "mark": true,
+   "aux": "relative_level"
+  },
+  "text_animated": {
+   "min_corr": null,
+   "scope": "mask_box_path",
+   "mark": true,
+   "aux": null
+  }
+ },
+ "stylized": [
+  "glitch",
+  "rgb_split",
+  "light_leak",
+  "film_burn",
+  "emoji",
+  "shake",
+  "flash",
+  "spin"
+ ],
+ "events": [
+  "punch",
+  "bump",
+  "snap",
+  "push",
+  "shake",
+  "flash",
+  "rgb_split",
+  "glitch",
+  "freeze",
+  "ramp",
+  "light_leak"
+ ],
+ "limits30": {
+  "whip": [
+   5,
+   13
+  ],
+  "zoom_through": [
+   7,
+   16
+  ],
+  "flash": [
+   2,
+   7
+  ],
+  "rgb_split": [
+   2,
+   8
+  ],
+  "glitch": [
+   2,
+   8
+  ],
+  "light_leak": [
+   15,
+   45
+  ],
+  "bump": [
+   5,
+   16
+  ]
+ },
+ "appetite": {
+  "none": 0.0,
+  "light": 0.5,
+  "normal": 1.0,
+  "bold": 1.25
+ },
+ "generic": {
+  "whip": [
+   "custom_whip",
+   "whip_pair"
+  ],
+  "zoom": [
+   "custom_zoom_overlap",
+   "custom_zoom_through"
+  ]
+ }
+}
