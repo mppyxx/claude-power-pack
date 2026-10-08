@@ -1,0 +1,75 @@
+name: Deploy site
+
+# Builds the landing page at https://mppyxx.github.io/claude-power-pack/ from site/,
+# adds the repo's assets/ folder, the overview PDF and llms.txt, and publishes it to GitHub Pages.
+# One-time setup: repo Settings > Pages > Build and deployment > Source: GitHub Actions.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - "assets/**"
+      - "docs/Claude-Power-Pack-overview.pdf"
+      - "llms.txt"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time. A newer push waits for the running deploy instead of cancelling it halfway.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    name: Build the site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v7
+
+      - name: Set up Pages
+        uses: actions/configure-pages@v6
+
+      - name: Put the site together
+        run: |
+          set -euo pipefail
+          rm -rf build
+          mkdir -p build/assets
+          cp -R site/. build/
+          if [ -d assets ]; then
+            cp -R assets/. build/assets/
+          else
+            echo "::warning::No assets/ folder in the repo; the page will show its text fallbacks instead of images."
+          fi
+          cp docs/Claude-Power-Pack-overview.pdf build/
+          # The repo-root llms.txt is the source of truth; keep the published copy identical.
+          cp llms.txt build/llms.txt
+          echo "Files in the site:"
+          find build -type f | sort
+
+      - name: Upload the site
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: build
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v5

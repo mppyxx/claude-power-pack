@@ -1,0 +1,76 @@
+name: Bug report
+description: The installer, a skill or the docs didn't work the way they should.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this.
+
+        Before you paste anything, check it for API keys, tokens or passwords and remove them.
+        If this is a security problem, please don't use this form. Use the private report on the Security tab instead (see SECURITY.md).
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - macOS (Apple silicon)
+        - macOS (Intel)
+        - Linux
+        - Windows (WSL)
+        - Something else
+    validations:
+      required: true
+
+  - type: input
+    id: os-version
+    attributes:
+      label: OS version
+      placeholder: "macOS 26.1, Ubuntu 24.04, ..."
+
+  - type: input
+    id: claude-version
+    attributes:
+      label: Claude Code version
+      description: The output of `claude --version`. Write "not installed" if the command isn't there.
+      placeholder: "2.1.274 (Claude Code)"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: how
+    attributes:
+      label: How did you install?
+      options:
+        - I asked Claude to install it (it followed CLAUDE.md)
+        - bash install.sh
+        - bash install.sh --tools
+        - bash install.sh with other options (say which below)
+        - I haven't installed it yet
+    validations:
+      required: true
+
+  - type: input
+    id: options
+    attributes:
+      label: Options you used
+      description: Only if you picked "other options" above.
+      placeholder: "--extras --skip-mcp"
+
+  - type: textarea
+    id: output
+    attributes:
+      label: Installer output
+      description: Paste everything install.sh printed, and the output of `bash tools/verify.sh` if you ran it. The WARNING lines matter most.
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you expected, what happened instead, and the steps to make it happen again.
+    validations:
+      required: true

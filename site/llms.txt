@@ -1,0 +1,45 @@
+# Claude Power Pack
+
+> Claude Power Pack is a free, open-source, one-command installer for a complete Claude Code setup: 94 skills, 9 plugins, working rules (CLAUDE.md), tuned settings, 2 MCP servers and a guide to 14 claude.ai connectors and 15 desktop extensions. Open the folder in Claude Code and say "install this", or run `bash install.sh --tools`.
+
+Key facts:
+
+- Free and open source. The pack's own code is MIT licensed; third-party skills keep their own licences (MIT, Apache-2.0, ISC), listed in THIRD_PARTY_NOTICES.md.
+- 94 skills: 35 web research and browsers, 23 design and frontend, 13 Cloudflare and web platform, 6 animation, 5 working smarter, 4 AI image and video, 3 video editing, 3 marketing and writing, 2 security and SEO. Plus 9 optional extras with `--extras`.
+- 9 plugins: superpowers, andrej-karpathy-skills, figma, firebase, brag, design, marketing, brand-voice, legal.
+- Settings: Opus model, high effort, workflows on. MCP servers: playwright and chrome-devtools (no keys needed).
+- Install: `git clone https://github.com/mppyxx/claude-power-pack ~/claude-power-pack`, then open the folder in Claude Code and say "install this" (Claude follows CLAUDE.md), or run `bash install.sh --tools` yourself. `--dry-run` shows every change first.
+- Safe to re-run: backs up settings.json, CLAUDE.md and a list of existing skills to `~/.claude-power-pack-backup/<date-time>/` first, and never overwrites the user's own skills, settings or rules unless `--force` is passed.
+- Works with Claude Max; Claude Pro works too but hits usage limits sooner. Some tools need paid accounts: Higgsfield credits, Ahrefs, DaVinci Resolve Studio.
+- macOS is the main target. Linux works for skills, rules, settings, plugins and MCP servers. Windows is untested; WSL may work.
+- Logins (connectors, API keys, CLI sign-ins) are done by the user by hand; the installer never asks for a password or key.
+- Independent community project by mppyxx. Not affiliated with Anthropic.
+
+## Docs
+
+- [README](https://github.com/mppyxx/claude-power-pack/blob/main/README.md): what's inside, install in 3 steps, requirements and credits
+- [CLAUDE.md](https://github.com/mppyxx/claude-power-pack/blob/main/CLAUDE.md): install instructions written for Claude, followed when someone says "install this"
+- [Skills](https://github.com/mppyxx/claude-power-pack/blob/main/docs/SKILLS.md): every skill and plugin, what it does and what setup it needs
+- [Connectors](https://github.com/mppyxx/claude-power-pack/blob/main/docs/CONNECTORS.md): claude.ai connectors, desktop extensions and MCP servers, and where to turn each on
+- [How Claude works](https://github.com/mppyxx/claude-power-pack/blob/main/docs/HOW-CLAUDE-WORKS.md): how rules, skills, plugins and connectors fit together, plus habits that get better results
+- [Setup checklist](https://github.com/mppyxx/claude-power-pack/blob/main/docs/SETUP-CHECKLIST.md): step-by-step setup with test prompts and how to undo it
+
+## Source
+
+- [install.sh](https://github.com/mppyxx/claude-power-pack/blob/main/install.sh): the installer and its flags (--tools, --extras, --force, --dry-run, --skip-plugins, --skip-mcp)
+- [Working rules](https://github.com/mppyxx/claude-power-pack/blob/main/rules/CLAUDE.md): the rules added to ~/.claude/CLAUDE.md in a marked section
+- [Settings](https://github.com/mppyxx/claude-power-pack/blob/main/settings/settings.json): model, effort, workflows, plugin marketplaces and the graphify hook
+- [verify.sh](https://github.com/mppyxx/claude-power-pack/blob/main/tools/verify.sh): checks what's installed and what still needs the user
+- [merge_settings.py](https://github.com/mppyxx/claude-power-pack/blob/main/tools/merge_settings.py): merges settings without replacing values the user already set
+
+## Licences and credits
+
+- [THIRD_PARTY_NOTICES.md](https://github.com/mppyxx/claude-power-pack/blob/main/THIRD_PARTY_NOTICES.md): source repo and licence of every third-party skill
+- [LICENSE](https://github.com/mppyxx/claude-power-pack/blob/main/LICENSE): MIT licence for the pack's own code
+
+## Optional
+
+- [Overview PDF](https://github.com/mppyxx/claude-power-pack/blob/main/docs/Claude-Power-Pack-overview.pdf): a 3-page visual summary
+- [Landing page](https://mppyxx.github.io/claude-power-pack/): the project site, with FAQ
+- [SECURITY.md](https://github.com/mppyxx/claude-power-pack/blob/main/SECURITY.md): how to report a security problem
+- [CHANGELOG.md](https://github.com/mppyxx/claude-power-pack/blob/main/CHANGELOG.md): release history

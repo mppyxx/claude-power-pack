@@ -1,0 +1,392 @@
+name: Install test
+
+# Runs the real installer on a clean Ubuntu and a clean macOS machine, then checks the result.
+# Every step is plain bash or python3, so you can run the same commands on your own computer
+# (see CONTRIBUTING.md). The install steps point HOME at an empty temp folder, so nothing
+# outside the runner's temp space is touched.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: install-test-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  # Skills a default install puts in ~/.claude/skills: every folder in skills/ plus the
+  # lines in skills-upstream.txt not marked "extra". Change it together with README.md and docs/SKILLS.md.
+  EXPECTED_SKILLS: "94"
+
+jobs:
+  install:
+    name: Install on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - name: Check out the pack
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      # The installer fetches hormozi-ad-factory with npx. The skills CLI asks for Node 22.20 or newer,
+      # so pin a current LTS instead of relying on whatever the runner image ships.
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Show tool versions
+        run: |
+          bash --version | head -n 1
+          python3 --version
+          node --version
+          git --version
+          if command -v claude >/dev/null 2>&1; then
+            echo "claude: $(claude --version 2>/dev/null)"
+          else
+            echo "claude: not installed (expected here; the installer only warns)"
+          fi
+
+      - name: Syntax check
+        run: |
+          bash -n install.sh
+          bash -n tools/verify.sh
+          python3 -m py_compile tools/merge_settings.py
+          echo "ok    install.sh, tools/verify.sh and tools/merge_settings.py parse"
+
+      - name: ShellCheck (errors only)
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: "1"
+          HOMEBREW_NO_INSTALL_CLEANUP: "1"
+        run: |
+          if ! command -v shellcheck >/dev/null 2>&1; then
+            if [ "$RUNNER_OS" = "macOS" ]; then
+              brew install shellcheck
+            else
+              sudo apt-get update -qq && sudo apt-get install -y -qq shellcheck
+            fi
+          fi
+          shellcheck --version | sed -n 2p
+          shellcheck -S error install.sh tools/verify.sh
+          echo "ok    no ShellCheck errors"
+
+      - name: Dry run changes nothing
+        run: |
+          export HOME="$RUNNER_TEMP/dry-home"
+          unset CLAUDE_CONFIG_DIR
+          mkdir -p "$HOME"
+          bash install.sh --dry-run --skip-plugins --skip-mcp 2>&1 | tee "$RUNNER_TEMP/dry-run.log"
+          if [ -n "$(ls -A "$HOME")" ]; then
+            echo "FAIL  the dry run wrote to the home folder:"
+            find "$HOME" | head -n 50
+            exit 1
+          fi
+          echo "ok    the dry run left the home folder empty"
+
+      - name: Install into an empty home folder
+        run: |
+          export HOME="$RUNNER_TEMP/home"
+          unset CLAUDE_CONFIG_DIR
+          mkdir -p "$HOME"
+          bash install.sh --skip-plugins --skip-mcp 2>&1 | tee "$RUNNER_TEMP/first-run.log"
+
+      - name: Check the install
+        run: |
+          export HOME="$RUNNER_TEMP/home"
+          python3 - "$RUNNER_TEMP/first-run.log" <<'PY'
+          import json, os, shutil, sys
+
+          claude = os.path.join(os.environ["HOME"], ".claude")
+          failed = []
+
+          def check(ok, what):
+              print(("ok    " if ok else "FAIL  ") + what)
+              if not ok:
+                  failed.append(what)
+
+          def skill_folders(path):
+              return {n for n in os.listdir(path) if os.path.isfile(os.path.join(path, n, "SKILL.md"))}
+
+          # What a default install should add: skills/ plus the non-extra lines of skills-upstream.txt
+          wanted = skill_folders("skills")
+          with open("skills-upstream.txt", encoding="utf-8") as f:
+              for line in f:
+                  parts = line.split()
+                  if parts and not parts[0].startswith("#") and "extra" not in parts[2:]:
+                      wanted.add(parts[0])
+
+          got = skill_folders(os.path.join(claude, "skills"))
+          expected = int(os.environ["EXPECTED_SKILLS"])
+          check(len(got) == expected, f"{expected} skill folders with a SKILL.md in ~/.claude/skills (found {len(got)})")
+          detail = "" if got == wanted else f" (missing: {sorted(wanted - got)}, unexpected: {sorted(got - wanted)})"
+          check(got == wanted, "installed skills match skills/ plus skills-upstream.txt" + detail)
+          check("hormozi-ad-factory" in got, "hormozi-ad-factory was fetched from its author's repo")
+
+          with open(os.path.join(claude, "CLAUDE.md"), encoding="utf-8") as f:
+              rules = f.read()
+          check("claude-power-pack:start" in rules, "~/.claude/CLAUDE.md has the pack's section")
+
+          try:
+              with open(os.path.join(claude, "settings.json"), encoding="utf-8") as f:
+                  settings = json.load(f)
+              check(True, "settings.json is valid JSON")
+          except ValueError as e:
+              settings = {}
+              check(False, f"settings.json is valid JSON ({e})")
+          # Runners have no claude command. Where it exists, tools/verify.sh runs it and Claude Code
+          # may rename the model (for example to "opus[1m]"), so only then is a variant accepted.
+          model = str(settings.get("model"))
+          check(model == "opus" or (shutil.which("claude") and model.startswith("opus")),
+                f'settings.json has model "opus" (found {model!r})')
+
+          # The installer may only warn about the missing claude command (plugins and MCP servers
+          # are skipped here), and tools/verify.sh must find skills, rules and settings complete.
+          with open(sys.argv[1], encoding="utf-8") as f:
+              log = f.read().splitlines()
+          allowed = ("WARNING: Claude Code is not installed", "WARNING: the check above found problems")
+          other = [l for l in log if l.startswith("WARNING:") and not l.startswith(allowed)]
+          check(not other, "no unexpected installer warnings" + "".join("\n        " + l for l in other))
+          section, missing = "", []
+          for line in log:
+              if line and not line[0].isspace():
+                  section = line
+              elif line.strip().startswith("MISSING") and section in ("Skills", "Working rules", "Settings"):
+                  missing.append(f"{section}: {line.strip()}")
+          check(not missing, "tools/verify.sh found skills, rules and settings complete" + "".join("\n        " + l for l in missing))
+
+          sys.exit(1 if failed else 0)
+          PY
+
+      - name: Run the installer again (nothing should change)
+        run: |
+          export HOME="$RUNNER_TEMP/home"
+          unset CLAUDE_CONFIG_DIR
+          before="$RUNNER_TEMP/before-second-run"
+          mkdir -p "$before"
+          ls "$HOME/.claude/skills" > "$before/skills.txt"
+          cp "$HOME/.claude/CLAUDE.md" "$HOME/.claude/settings.json" "$before/"
+          bash install.sh --skip-plugins --skip-mcp 2>&1 | tee "$RUNNER_TEMP/second-run.log"
+          python3 - "$RUNNER_TEMP/second-run.log" "$before" <<'PY'
+          import os, re, sys
+
+          log_path, before = sys.argv[1], sys.argv[2]
+          claude = os.path.join(os.environ["HOME"], ".claude")
+          failed = []
+
+          def check(ok, what):
+              print(("ok    " if ok else "FAIL  ") + what)
+              if not ok:
+                  failed.append(what)
+
+          def read(path):
+              with open(path, encoding="utf-8") as f:
+                  return f.read()
+
+          log = read(log_path)
+          check(re.search(r"^added 0, replaced 0, ", log, re.M) is not None, "second run added 0 skills from skills/")
+          check(re.search(r"^fetched 0, ", log, re.M) is not None, "second run fetched 0 skills from GitHub")
+          now = sorted(os.listdir(os.path.join(claude, "skills")))
+          then = read(os.path.join(before, "skills.txt")).split()
+          check(now == sorted(then), f"skill folders unchanged ({len(now)})")
+
+          rules = read(os.path.join(claude, "CLAUDE.md"))
+          starts = rules.count("<!-- claude-power-pack:start -->")
+          ends = rules.count("<!-- claude-power-pack:end -->")
+          check(starts == 1 and ends == 1, f"CLAUDE.md has exactly one pack section (start markers: {starts}, end markers: {ends})")
+          check(rules == read(os.path.join(before, "CLAUDE.md")), "CLAUDE.md is byte for byte the same")
+          check(read(os.path.join(claude, "settings.json")) == read(os.path.join(before, "settings.json")), "settings.json is byte for byte the same")
+
+          sys.exit(1 if failed else 0)
+          PY
+
+      - name: Merge test (your own settings and rules stay yours)
+        run: |
+          export HOME="$RUNNER_TEMP/merge-home"
+          unset CLAUDE_CONFIG_DIR
+          mkdir -p "$HOME/.claude"
+          printf '%s\n' '{"model":"sonnet","enabledPlugins":{"x@y":true}}' > "$HOME/.claude/settings.json"
+          printf '%s\n' '# mine' > "$HOME/.claude/CLAUDE.md"
+          bash install.sh --skip-plugins --skip-mcp 2>&1 | tee "$RUNNER_TEMP/merge-run.log"
+          python3 - <<'PY'
+          import glob, json, os, sys
+
+          home = os.environ["HOME"]
+          claude = os.path.join(home, ".claude")
+          failed = []
+
+          def check(ok, what):
+              print(("ok    " if ok else "FAIL  ") + what)
+              if not ok:
+                  failed.append(what)
+
+          with open(os.path.join(claude, "settings.json"), encoding="utf-8") as f:
+              settings = json.load(f)
+          check(settings.get("model") == "sonnet", f'model is still "sonnet" (found {settings.get("model")!r})')
+          check(settings.get("enabledPlugins", {}).get("x@y") is True, "x@y is still enabled")
+          check(settings.get("effortLevel") == "high", "the pack's missing keys were added (effortLevel)")
+
+          with open(os.path.join(claude, "CLAUDE.md"), encoding="utf-8") as f:
+              rules = f.read()
+          check(rules.splitlines()[0] == "# mine", f'"# mine" is still the first line (found {rules.splitlines()[0]!r})')
+          check("claude-power-pack:start" in rules, "the pack's section was added below it")
+
+          backups = glob.glob(os.path.join(home, ".claude-power-pack-backup", "*", "settings.json"))
+          original = False
+          for b in backups:
+              with open(b, encoding="utf-8") as f:
+                  original = original or json.load(f).get("model") == "sonnet"
+          check(original, "the original settings.json was backed up first")
+
+          sys.exit(1 if failed else 0)
+          PY
+
+      # install.sh hides the skills CLI output, so if something failed, fetch the GitHub skills
+      # again in a scratch home folder with the output showing.
+      - name: If a GitHub skill fetch failed, show why
+        if: failure()
+        run: |
+          export HOME="$RUNNER_TEMP/fetch-debug"
+          unset CLAUDE_CONFIG_DIR
+          mkdir -p "$HOME/.claude/skills"
+          grep -vE '^[[:space:]]*(#|$)' skills-upstream.txt | while read -r name repo kind _; do
+            [ "$kind" = extra ] && continue
+            echo "== npx skills add $repo --skill $name"
+            DISABLE_TELEMETRY=1 npx -y skills add "$repo" -g -a claude-code -s "$name" -y --copy </dev/null || true
+          done
+
+  lint:
+    name: Lint skills and copy
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out the pack
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Every SKILL.md has a name and description, and the name matches its folder
+        run: |
+          python3 - <<'PY'
+          import os, re, sys
+
+          def front_matter(path):
+              with open(path, encoding="utf-8") as f:
+                  lines = f.read().lstrip(chr(0xFEFF)).splitlines()
+              if not lines or lines[0].strip() != "---":
+                  return None
+              for i in range(1, len(lines)):
+                  if lines[i].strip() == "---":
+                      return lines[1:i]
+              return None
+
+          def field(meta, key):
+              for i, line in enumerate(meta):
+                  m = re.match(r"^" + key + r":\s*(.*)$", line)
+                  if not m:
+                      continue
+                  value = m.group(1).strip()
+                  if value[:1] in ("|", ">"):  # a folded or literal block on the next indented lines
+                      block = []
+                      for nxt in meta[i + 1:]:
+                          if nxt.strip() and not nxt[:1].isspace():
+                              break
+                          block.append(nxt.strip())
+                      return " ".join(b for b in block if b)
+                  return value.strip("'\"").strip()
+              return None
+
+          problems, count = [], 0
+          for root in ("skills", "extras"):
+              for folder in sorted(os.listdir(root)):
+                  path = os.path.join(root, folder)
+                  if not os.path.isdir(path):
+                      continue
+                  count += 1
+                  skill = os.path.join(path, "SKILL.md")
+                  if not os.path.isfile(skill):
+                      problems.append(f"{path}: no SKILL.md")
+                      continue
+                  meta = front_matter(skill)
+                  if meta is None:
+                      problems.append(f"{skill}: no YAML front matter (it must start and end with a --- line)")
+                      continue
+                  name, description = field(meta, "name"), field(meta, "description")
+                  if not name:
+                      problems.append(f"{skill}: no name")
+                  elif name != folder:
+                      problems.append(f"{skill}: name is {name!r} but the folder is {folder!r}")
+                  if not description:
+                      problems.append(f"{skill}: no description")
+
+          for p in problems:
+              print("FAIL  " + p)
+          print(f"checked {count} skill folders, {len(problems)} problem(s)")
+          sys.exit(1 if problems else 0)
+          PY
+
+      - name: Every skill is listed in docs/SKILLS.md
+        if: ${{ !cancelled() }}
+        run: |
+          python3 - <<'PY'
+          import os, sys
+
+          names = []
+          for root in ("skills", "extras"):
+              names += [n for n in sorted(os.listdir(root)) if os.path.isdir(os.path.join(root, n))]
+          with open("skills-upstream.txt", encoding="utf-8") as f:
+              for line in f:
+                  parts = line.split()
+                  if parts and not parts[0].startswith("#"):
+                      names.append(parts[0])
+
+          with open("docs/SKILLS.md", encoding="utf-8") as f:
+              doc = f.read()
+          missing = [n for n in names if f"`{n}`" not in doc]
+          for n in missing:
+              print(f"FAIL  {n} is not in docs/SKILLS.md (add a row with `{n}` in backticks)")
+          print(f"checked {len(names)} skills, {len(missing)} missing")
+          sys.exit(1 if missing else 0)
+          PY
+
+      - name: No em dashes in the pack's own writing
+        if: ${{ !cancelled() }}
+        run: |
+          python3 - <<'PY'
+          import glob, os, sys
+
+          DASH = chr(0x2014)  # the em dash character
+          paths = ["README.md", "CLAUDE.md", "install.sh", "SECURITY.md", "CONTRIBUTING.md", "CHANGELOG.md"]
+          paths += sorted(glob.glob("docs/*.md"))
+          for folder in ("rules", "tools", ".github"):
+              for root, dirs, files in os.walk(folder):
+                  dirs[:] = [d for d in dirs if d != "__pycache__"]
+                  paths += [os.path.join(root, f) for f in sorted(files) if not f.endswith(".pyc")]
+
+          hits, checked = [], 0
+          for path in paths:
+              if not os.path.isfile(path):
+                  continue
+              checked += 1
+              with open(path, encoding="utf-8") as f:
+                  for number, line in enumerate(f, 1):
+                      if DASH in line:
+                          hits.append(f"{path}:{number}: {line.strip()[:120]}")
+          for h in hits:
+              print("FAIL  " + h)
+          print(f"checked {checked} files, {len(hits)} line(s) with an em dash (use a comma, colon, period or parentheses)")
+          sys.exit(1 if hits else 0)
+          PY

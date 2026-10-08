@@ -1,0 +1,55 @@
+name: Skill suggestion
+description: Suggest a skill that should be in the pack.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the idea. The pack copies skills that have an open licence. A skill without one can still be added, but the installer fetches it from its author instead of copying it here. CONTRIBUTING.md has the details.
+
+  - type: input
+    id: name
+    attributes:
+      label: Skill name
+      description: The `name` in its SKILL.md.
+      placeholder: "my-great-skill"
+    validations:
+      required: true
+
+  - type: input
+    id: repo
+    attributes:
+      label: Repo link
+      placeholder: "https://github.com/owner/repo"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: licence
+    attributes:
+      label: Licence
+      options:
+        - MIT
+        - Apache-2.0
+        - ISC
+        - BSD
+        - Another open licence (say which below)
+        - No licence, or not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it belongs in the pack
+      description: What it does, who it helps, and whether it overlaps a skill that's already here (see docs/SKILLS.md).
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: read-it
+    attributes:
+      label: Before you send
+      options:
+        - label: I read the skill's SKILL.md and any scripts it runs, and nothing in them looks unsafe or hidden.
+          required: true

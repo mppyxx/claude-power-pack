@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security policy
+    url: https://github.com/mppyxx/claude-power-pack/security/policy
+    about: Found something sensitive? Please don't open a public issue. This page explains how to report it privately, and what the installer does and never does.
