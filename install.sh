@@ -56,7 +56,11 @@ say "target: $CLAUDE_DIR"
 
 # ---------------------------------------------------------------- 0. checks
 section "Checking what's installed"
-if have claude; then
+if [ "$UPDATE" = 1 ]; then
+  # updates only copy files and merge settings: python3 is all they need
+  works_py=0; python3 -c 'import sys' >/dev/null 2>&1 && works_py=1
+  if [ "$works_py" = 1 ]; then say "python3: ok"; else warn "python3 is required for updates"; fi
+elif have claude; then
   say "claude: $(claude --version 2>/dev/null | head -1)"
 else
   warn "Claude Code is not installed. Install it first, sign in with your Max account, then run this again:"
@@ -70,11 +74,13 @@ works() {   # the command exists and actually runs (macOS has placeholder git/py
     *) have "$1" ;;
   esac
 }
-for t in git node npm python3; do
-  if works "$t"; then say "$t: ok"; else warn "$t is missing or not working (on a Mac run: xcode-select --install, or use --tools with Homebrew)"; fi
-done
-if ! works python3; then
-  warn "python3 is required for the rules and settings steps. Install it, then run this again."
+if [ "$UPDATE" = 0 ]; then
+  for t in git node npm python3; do
+    if works "$t"; then say "$t: ok"; else warn "$t is missing or not working (on a Mac run: xcode-select --install, or use --tools with Homebrew)"; fi
+  done
+  if ! works python3; then
+    warn "python3 is required for the rules and settings steps. Install it, then run this again."
+  fi
 fi
 
 # ---------------------------------------------------------------- 1. backup
