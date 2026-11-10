@@ -1,0 +1,1421 @@
+{
+  "generated": "2026-10-08T20:09:39",
+  "notes": [
+    "Checker change 1 (secret check), made after seeing plain-shipcheck-1: the first version required the published key to be absent from every .py file. plain-shipcheck-1 wrote a regression test asserting the key is gone, which has to contain the key, so it failed wrongly. Final rule: the key must be absent from the Python files the app actually loads (app.py and its imports). The same change later decided pack-shipcheck-2, which left a full backup copy of the original app.py (with the old key) in .backup-pre-security-fix/. Under the first rule both of those runs would be 5/6 and the shipcheck averages would be 5.0 (plain) vs 5.5 (pack); under the final rule they are 5.5 vs 6.0. The gap is 0.5 either way.",
+    "Checker change 2 (functionality probe), made after seeing pack-shipcheck-1: that run changed handle() to return 4 items (status, content_type, body, extra_headers) instead of the documented 3, and the probe read the last item as the body, reporting 3/7 normal checks working. The probe now reads the third item. It also stopped setting TDIR_TOKEN_TTL to a secret string just because the name contains TOKEN. With the fix the run is 7/7. The return-shape change is real: the agent updated the tests to match, but any other caller of handle() would need updating. It is recorded (handle_return_shapes) but not scored.",
+    "Judgment call that decides the only shipcheck difference: plain-shipcheck-2 set SECRET_KEY = env var or 'dev-only-insecure-key-do-not-deploy', and serve() refuses to start with that key unless debug is on. The rule written before any run says the app must not fall back to a key written in the source when the env var is missing (refusing to start is fine), and importing the module does fall back, so it counts as not fixed. Under a looser rule that only checks the documented 'python3 app.py' start path it would be 6/6 and shipcheck would be a tie (6.0 vs 6.0).",
+    "Cross-run interference: a test server started by pack-shipcheck-1's review subagent (from /tmp/tdirrev, port 8731) outlived its run, because Claude Code's Bash tool starts commands in their own process groups. plain-shipcheck-2 later tried port 8731, got answers from that stray server, noticed, said so in its final message, and re-checked in-process. This came after its last code edit, so the scored files were unaffected. The two shipcheck-2 runs also both wrote /tmp/srv.log at the same time, and port 8000 on this machine is held by an unrelated local service that several runs hit. The harness now kills processes whose working directory is inside the run folder after each run; that would have caught one of the two strays. Both strays were killed after the benchmark.",
+    "Runs that waited on a background review agent end with two result events. duration_ms and num_turns in the final event cover only the last turn, so results use wall-clock time and the sum across result events; total_cost_usd is cumulative and taken as the maximum.",
+    "Copy em dash counts include everything in post.md. Both plain posts start with a title line the agent added ('LinkedIn launch post \u2014 Ferrynote 1.0'); counting only the post body, plain has 4 and 3.",
+    "Agents in both configs wrote scratch files to /tmp (pack more often: /tmp/crosscheck.py, /tmp/oldcheck/, /tmp/tdirrev/ and others). These were left in place."
+  ],
+  "claude_flags_common": [
+    "--model",
+    "opus",
+    "--setting-sources",
+    "project",
+    "--strict-mcp-config",
+    "--dangerously-skip-permissions",
+    "--output-format",
+    "stream-json",
+    "--verbose",
+    "--no-session-persistence"
+  ],
+  "work_root": "/Users/Shared/cpb-runs",
+  "smoke": {
+    "plain": {
+      "model": "claude-opus-5",
+      "cwd": "/Users/Shared/cpb-runs/smoke-plain/project",
+      "n_skills": 18,
+      "extra_skills_vs_plain": null,
+      "plugins": [],
+      "mcp_servers": [],
+      "memory_paths": {
+        "auto": "~/.claude/projects/-Users-Shared-cpb-runs-smoke-plain-project/memory/"
+      },
+      "agents": [
+        "claude",
+        "Explore",
+        "general-purpose",
+        "Plan",
+        "statusline-setup"
+      ],
+      "n_tools": 26,
+      "claude_code_version": "2.1.274"
+    },
+    "pack": {
+      "model": "claude-opus-5",
+      "cwd": "/Users/Shared/cpb-runs/smoke-pack/project",
+      "n_skills": 169,
+      "extra_skills_vs_plain": [
+        "ad-creative-pro",
+        "agents-sdk",
+        "ai-reel-editor",
+        "andrej-karpathy-skills:karpathy-guidelines",
+        "animate",
+        "animate-expo",
+        "animation-vocabulary",
+        "anti-slop-ajonai",
+        "apple-design",
+        "ask-sonner",
+        "brag:brag",
+        "brand-voice:brand-voice-enforcement",
+        "brand-voice:discover-brand",
+        "brand-voice:guideline-generation",
+        "brandkit",
+        "claude-setup-tuneup",
+        "cloudflare",
+        "cloudflare-email-service",
+        "cloudflare-one",
+        "cloudflare-one-migrations",
+        "design-taste-frontend",
+        "design-taste-frontend-v1",
+        "design:accessibility-review",
+        "design:design-critique",
+        "design:design-handoff",
+        "design:design-system",
+        "design:research-synthesis",
+        "design:user-research",
+        "design:ux-copy",
+        "durable-objects",
+        "emil-design-eng",
+        "figma:figma-code-connect",
+        "figma:figma-create-new-file",
+        "figma:figma-design-to-code",
+        "figma:figma-generate-design",
+        "figma:figma-generate-diagram",
+        "figma:figma-generate-library",
+        "figma:figma-generative-plugins",
+        "figma:figma-implement-motion",
+        "figma:figma-shaders",
+        "figma:figma-swiftui",
+        "figma:figma-use",
+        "figma:figma-use-figjam",
+        "figma:figma-use-motion",
+        "figma:figma-use-slides",
+        "find-animation-opportunities",
+        "find-skills",
+        "firecrawl",
+        "firecrawl-agent",
+        "firecrawl-build-interact",
+        "firecrawl-build-onboarding",
+        "firecrawl-build-scrape",
+        "firecrawl-build-search",
+        "firecrawl-company-directories",
+        "firecrawl-competitive-intel",
+        "firecrawl-crawl",
+        "firecrawl-dashboard-reporting",
+        "firecrawl-deep-research",
+        "firecrawl-demo-walkthrough",
+        "firecrawl-download",
+        "firecrawl-interact",
+        "firecrawl-knowledge-base",
+        "firecrawl-knowledge-ingest",
+        "firecrawl-lead-gen",
+        "firecrawl-lead-research",
+        "firecrawl-map",
+        "firecrawl-market-research",
+        "firecrawl-monitor",
+        "firecrawl-parse",
+        "firecrawl-qa",
+        "firecrawl-research-index",
+        "firecrawl-research-papers",
+        "firecrawl-scrape",
+        "firecrawl-search",
+        "firecrawl-seo-audit",
+        "firecrawl-shop",
+        "firecrawl-website-design-clone",
+        "firecrawl-workflows",
+        "frontend-design",
+        "full-output-enforcement",
+        "gpt-taste",
+        "graphify",
+        "hallmark",
+        "higgsfield-generate",
+        "higgsfield-marketplace-cards",
+        "higgsfield-product-photoshoot",
+        "higgsfield-soul-id",
+        "high-end-visual-design",
+        "hormozi-ad-factory",
+        "humanizer",
+        "image-to-code",
+        "imagegen-frontend-mobile",
+        "imagegen-frontend-web",
+        "impeccable",
+        "improve-animations",
+        "industrial-brutalist-ui",
+        "legal:brief",
+        "legal:compliance-check",
+        "legal:legal-response",
+        "legal:legal-risk-assessment",
+        "legal:meeting-briefing",
+        "legal:review-contract",
+        "legal:signature-request",
+        "legal:triage-nda",
+        "legal:vendor-check",
+        "marketing:brand-review",
+        "marketing:campaign-plan",
+        "marketing:competitive-brief",
+        "marketing:draft-content",
+        "marketing:email-sequence",
+        "marketing:performance-report",
+        "marketing:seo-audit",
+        "minimalist-ui",
+        "never-get-hacked",
+        "pick-ui-library",
+        "playwright-cli",
+        "prototype",
+        "redesign-existing-projects",
+        "reel-reader",
+        "resolve-colorist",
+        "resolve-editor",
+        "review-animations",
+        "sandbox-migrate-to-next",
+        "sandbox-next",
+        "sandbox-stable",
+        "seo-checklist",
+        "stitch-design-taste",
+        "superpowers:brainstorming",
+        "superpowers:diagnosing-superpowers",
+        "superpowers:dispatching-parallel-agents",
+        "superpowers:executing-plans",
+        "superpowers:finishing-a-development-branch",
+        "superpowers:receiving-code-review",
+        "superpowers:requesting-code-review",
+        "superpowers:subagent-driven-development",
+        "superpowers:systematic-debugging",
+        "superpowers:test-driven-development",
+        "superpowers:using-git-worktrees",
+        "superpowers:using-superpowers",
+        "superpowers:verification-before-completion",
+        "superpowers:writing-plans",
+        "superpowers:writing-skills",
+        "tavily-research",
+        "technical-blog-writing",
+        "turnstile-spin",
+        "uiux-pro-max",
+        "video-transcript-downloader",
+        "web-perf",
+        "workers-best-practices",
+        "wrangler",
+        "write-swift"
+      ],
+      "plugins": [
+        "superpowers 6.4.1",
+        "andrej-karpathy-skills 1.0.0",
+        "figma 2.2.120",
+        "1.0.0",
+        "brag 0.2.2",
+        "design 1.2.0",
+        "marketing 1.2.0",
+        "brand-voice 1.1.0",
+        "legal 1.3.0"
+      ],
+      "mcp_servers": [
+        {
+          "name": "playwright",
+          "status": "connected",
+          "source": "dynamic"
+        },
+        {
+          "name": "chrome-devtools",
+          "status": "connected",
+          "source": "dynamic"
+        }
+      ],
+      "memory_paths": {
+        "auto": "~/.claude/projects/-Users-Shared-cpb-runs-smoke-pack-project/memory/"
+      },
+      "agents": [
+        "brand-voice:content-generation",
+        "brand-voice:conversation-analysis",
+        "brand-voice:discover-brand",
+        "brand-voice:document-analysis",
+        "brand-voice:quality-assurance",
+        "claude",
+        "Explore",
+        "general-purpose",
+        "Plan",
+        "statusline-setup"
+      ],
+      "n_tools": 81,
+      "claude_code_version": "2.1.274",
+      "extra_project_skills": [
+        "ad-creative-pro",
+        "agents-sdk",
+        "ai-reel-editor",
+        "animate",
+        "animate-expo",
+        "animation-vocabulary",
+        "anti-slop-ajonai",
+        "apple-design",
+        "ask-sonner",
+        "brandkit",
+        "claude-setup-tuneup",
+        "cloudflare",
+        "cloudflare-email-service",
+        "cloudflare-one",
+        "cloudflare-one-migrations",
+        "design-taste-frontend",
+        "design-taste-frontend-v1",
+        "durable-objects",
+        "emil-design-eng",
+        "find-animation-opportunities",
+        "find-skills",
+        "firecrawl",
+        "firecrawl-agent",
+        "firecrawl-build-interact",
+        "firecrawl-build-onboarding",
+        "firecrawl-build-scrape",
+        "firecrawl-build-search",
+        "firecrawl-company-directories",
+        "firecrawl-competitive-intel",
+        "firecrawl-crawl",
+        "firecrawl-dashboard-reporting",
+        "firecrawl-deep-research",
+        "firecrawl-demo-walkthrough",
+        "firecrawl-download",
+        "firecrawl-interact",
+        "firecrawl-knowledge-base",
+        "firecrawl-knowledge-ingest",
+        "firecrawl-lead-gen",
+        "firecrawl-lead-research",
+        "firecrawl-map",
+        "firecrawl-market-research",
+        "firecrawl-monitor",
+        "firecrawl-parse",
+        "firecrawl-qa",
+        "firecrawl-research-index",
+        "firecrawl-research-papers",
+        "firecrawl-scrape",
+        "firecrawl-search",
+        "firecrawl-seo-audit",
+        "firecrawl-shop",
+        "firecrawl-website-design-clone",
+        "firecrawl-workflows",
+        "frontend-design",
+        "full-output-enforcement",
+        "gpt-taste",
+        "graphify",
+        "hallmark",
+        "higgsfield-generate",
+        "higgsfield-marketplace-cards",
+        "higgsfield-product-photoshoot",
+        "higgsfield-soul-id",
+        "high-end-visual-design",
+        "hormozi-ad-factory",
+        "humanizer",
+        "image-to-code",
+        "imagegen-frontend-mobile",
+        "imagegen-frontend-web",
+        "impeccable",
+        "improve-animations",
+        "industrial-brutalist-ui",
+        "minimalist-ui",
+        "never-get-hacked",
+        "pick-ui-library",
+        "playwright-cli",
+        "prototype",
+        "redesign-existing-projects",
+        "reel-reader",
+        "resolve-colorist",
+        "resolve-editor",
+        "review-animations",
+        "sandbox-migrate-to-next",
+        "sandbox-next",
+        "sandbox-stable",
+        "seo-checklist",
+        "stitch-design-taste",
+        "tavily-research",
+        "technical-blog-writing",
+        "turnstile-spin",
+        "uiux-pro-max",
+        "video-transcript-downloader",
+        "web-perf",
+        "workers-best-practices",
+        "wrangler",
+        "write-swift"
+      ],
+      "extra_plugin_skills": [
+        "andrej-karpathy-skills:karpathy-guidelines",
+        "brag:brag",
+        "brand-voice:brand-voice-enforcement",
+        "brand-voice:discover-brand",
+        "brand-voice:guideline-generation",
+        "design:accessibility-review",
+        "design:design-critique",
+        "design:design-handoff",
+        "design:design-system",
+        "design:research-synthesis",
+        "design:user-research",
+        "design:ux-copy",
+        "figma:figma-code-connect",
+        "figma:figma-create-new-file",
+        "figma:figma-design-to-code",
+        "figma:figma-generate-design",
+        "figma:figma-generate-diagram",
+        "figma:figma-generate-library",
+        "figma:figma-generative-plugins",
+        "figma:figma-implement-motion",
+        "figma:figma-shaders",
+        "figma:figma-swiftui",
+        "figma:figma-use",
+        "figma:figma-use-figjam",
+        "figma:figma-use-motion",
+        "figma:figma-use-slides",
+        "legal:brief",
+        "legal:compliance-check",
+        "legal:legal-response",
+        "legal:legal-risk-assessment",
+        "legal:meeting-briefing",
+        "legal:review-contract",
+        "legal:signature-request",
+        "legal:triage-nda",
+        "legal:vendor-check",
+        "marketing:brand-review",
+        "marketing:campaign-plan",
+        "marketing:competitive-brief",
+        "marketing:draft-content",
+        "marketing:email-sequence",
+        "marketing:performance-report",
+        "marketing:seo-audit",
+        "superpowers:brainstorming",
+        "superpowers:diagnosing-superpowers",
+        "superpowers:dispatching-parallel-agents",
+        "superpowers:executing-plans",
+        "superpowers:finishing-a-development-branch",
+        "superpowers:receiving-code-review",
+        "superpowers:requesting-code-review",
+        "superpowers:subagent-driven-development",
+        "superpowers:systematic-debugging",
+        "superpowers:test-driven-development",
+        "superpowers:using-git-worktrees",
+        "superpowers:using-superpowers",
+        "superpowers:verification-before-completion",
+        "superpowers:writing-plans",
+        "superpowers:writing-skills"
+      ],
+      "extra_other": [],
+      "pack_skill_folders_not_loaded": []
+    }
+  },
+  "averages": {
+    "plain": {
+      "runs": 6,
+      "bugfix_tests_passed_of_10": 10,
+      "shipcheck_issues_fixed_of_6": 5.5,
+      "shipcheck_functionality_of_7": 7,
+      "copy_em_dashes": 4.5,
+      "copy_filler_terms": 0,
+      "copy_words": 328,
+      "verified_before_done": "4/4",
+      "verified_before_done_rate": 1.0,
+      "wall_s_mean": 188.117,
+      "api_turn_time_s_mean": 186.687,
+      "turns_mean": 9,
+      "cost_usd_mean": 0.57,
+      "cost_usd_total": 3.4208,
+      "failures": [],
+      "per_task": {
+        "bugfix": {
+          "wall_s_mean": 262.7,
+          "turns_mean": 10.5,
+          "cost_usd_mean": 0.669
+        },
+        "shipcheck": {
+          "wall_s_mean": 266.9,
+          "turns_mean": 12.5,
+          "cost_usd_mean": 0.875
+        },
+        "copy": {
+          "wall_s_mean": 34.75,
+          "turns_mean": 4,
+          "cost_usd_mean": 0.166
+        }
+      }
+    },
+    "pack": {
+      "runs": 6,
+      "bugfix_tests_passed_of_10": 10,
+      "shipcheck_issues_fixed_of_6": 6,
+      "shipcheck_functionality_of_7": 7,
+      "copy_em_dashes": 0,
+      "copy_filler_terms": 0,
+      "copy_words": 345,
+      "verified_before_done": "4/4",
+      "verified_before_done_rate": 1.0,
+      "wall_s_mean": 541.683,
+      "api_turn_time_s_mean": 389.49,
+      "turns_mean": 21,
+      "cost_usd_mean": 2.43,
+      "cost_usd_total": 14.5798,
+      "failures": [],
+      "per_task": {
+        "bugfix": {
+          "wall_s_mean": 711.6,
+          "turns_mean": 24,
+          "cost_usd_mean": 3.183
+        },
+        "shipcheck": {
+          "wall_s_mean": 781.5,
+          "turns_mean": 33,
+          "cost_usd_mean": 3.702
+        },
+        "copy": {
+          "wall_s_mean": 131.95,
+          "turns_mean": 6,
+          "cost_usd_mean": 0.405
+        }
+      }
+    }
+  },
+  "runs": [
+    {
+      "id": "pack-bugfix-1",
+      "config": "pack",
+      "task": "bugfix",
+      "n": 1,
+      "status": "ok",
+      "exit_code": 0,
+      "wall_s": 828.6,
+      "result_events": 2,
+      "duration_ms_final_event": 129300,
+      "duration_ms": 347244,
+      "num_turns_final_event": 8,
+      "num_turns": 27,
+      "total_cost_usd": 3.589859,
+      "result_subtype": "success",
+      "is_error": false,
+      "check": {
+        "score": 10,
+        "max": 10,
+        "tests": {
+          "t01_regression_no_coupon": {
+            "pass": true
+          },
+          "t02_regression_shipping_under_threshold": {
+            "pass": true
+          },
+          "t03_reported_case_percent_coupon": {
+            "pass": true
+          },
+          "t04_fixed_coupon_tax_after_discount": {
+            "pass": true
+          },
+          "t05_coupon_larger_than_order_total": {
+            "pass": true
+          },
+          "t06_coupon_larger_than_order_receipt_lines": {
+            "pass": true
+          },
+          "t07_free_shipping_uses_amount_after_coupon": {
+            "pass": true
+          },
+          "t08_rounded_to_cents": {
+            "pass": true
+          },
+          "t09_receipt_adds_up": {
+            "pass": true
+          },
+          "t10_half_cent_rounds_up": {
+            "pass": true
+          }
+        }
+      },
+      "usage": {
+        "tool_calls": 39,
+        "by_tool": {
+          "Skill": 2,
+          "Bash": 34,
+          "Agent": 1,
+          "Read": 1,
+          "ToolSearch": 1
+        },
+        "skills_invoked": [
+          "superpowers:systematic-debugging",
+          "superpowers:verification-before-completion"
+        ],
+        "subagents": [
+          "general-purpose"
+        ],
+        "mcp_tools_used": [],
+        "subagent_tool_calls": 16
+      },
+      "score": 10,
+      "score_max": 10,
+      "process": {
+        "verified_after_last_edit": true,
+        "last_edit": "Bash: python3 - <<'PY'\ns = open('/tmp/crosscheck.py').read()\ns = s.replace('    disc = max(0, min(disc, sub))', '    disc = max(0, min(disc, max(sub, 0)))')\ns = s.replace(\"prices = [0.01,\", \"prices = [-70.0",
+        "run_after": "(same command, after the write) ').write(s)\nprint(\"cross-check extended with negative lines\")\nPY\nPYTHONPATH=. python3 /tmp/crosscheck.py 2>&1 | tail -8"
+      }
+    },
+    {
+      "id": "pack-bugfix-2",
+      "config": "pack",
+      "task": "bugfix",
+      "n": 2,
+      "status": "ok",
+      "exit_code": 0,
+      "wall_s": 594.6,
+      "result_events": 1,
+      "duration_ms_final_event": 592792,
+      "duration_ms": 592792,
+      "num_turns_final_event": 21,
+      "num_turns": 21,
+      "total_cost_usd": 2.7757482499999995,
+      "result_subtype": "success",
+      "is_error": false,
+      "check": {
+        "score": 10,
+        "max": 10,
+        "tests": {
+          "t01_regression_no_coupon": {
+            "pass": true
+          },
+          "t02_regression_shipping_under_threshold": {
+            "pass": true
+          },
+          "t03_reported_case_percent_coupon": {
+            "pass": true
+          },
+          "t04_fixed_coupon_tax_after_discount": {
+            "pass": true
+          },
+          "t05_coupon_larger_than_order_total": {
+            "pass": true
+          },
+          "t06_coupon_larger_than_order_receipt_lines": {
+            "pass": true
+          },
+          "t07_free_shipping_uses_amount_after_coupon": {
+            "pass": true
+          },
+          "t08_rounded_to_cents": {
+            "pass": true
+          },
+          "t09_receipt_adds_up": {
+            "pass": true
+          },
+          "t10_half_cent_rounds_up": {
+            "pass": true
+          }
+        }
+      },
+      "usage": {
+        "tool_calls": 32,
+        "by_tool": {
+          "Bash": 25,
+          "Skill": 1,
+          "Write": 1,
+          "Agent": 1,
+          "Read": 1,
+          "Edit": 3
+        },
+        "skills_invoked": [
+          "superpowers:systematic-debugging"
+        ],
+        "subagents": [
+          "general-purpose"
+        ],
+        "mcp_tools_used": [],
+        "subagent_tool_calls": 13
+      },
+      "score": 10,
+      "score_max": 10,
+      "process": {
+        "verified_after_last_edit": true,
+        "last_edit": "Bash: python3 - <<'PY'\nimport pathlib\np = pathlib.Path(\"test_checkout.py\")\nsrc = p.read_text()\n\nold_doc = '''        \"\"\"Rule 5: subtotal - discount + tax + shipping == total, exactly.\"\"\"'''\nnew_doc = '''   ",
+        "run_after": "(same command, after the write) src)\nprint(\"ok\")\nPY\npython3 -m unittest 2>&1 | tail -8"
+      }
+    },
+    {
+      "id": "pack-copy-1",
+      "config": "pack",
+      "task": "copy",
+      "n": 1,
+      "status": "ok",
+      "exit_code": 0,
+      "wall_s": 217.0,
+      "result_events": 1,
+      "duration_ms_final_event": 215262,
+      "duration_ms": 215262,
+      "num_turns_final_event": 6,
+      "num_turns": 6,
+      "total_cost_usd": 0.40438949999999996,
+      "result_subtype": "success",
+      "is_error": false,
+      "check": {
+        "em_dashes": 0,
+        "en_dashes": 0,
+        "filler_total": 0,
+        "filler_hits": {},
+        "words": 340,
+        "post_exists": true
+      },
+      "usage": {
+        "tool_calls": 4,
+        "by_tool": {
+          "Bash": 3,
+          "Skill": 1
+        },
+        "skills_invoked": [
+          "humanizer"
+        ],
+        "subagents": [],
+        "mcp_tools_used": [],
+        "subagent_tool_calls": 0
+      },
+      "post_exists": true,
+      "em_dashes": 0,
+      "filler_total": 0,
+      "words": 340,
+      "en_dashes": 0,
+      "filler_hits": {}
+    },
+    {
+      "id": "pack-copy-2",
+      "config": "pack",
+      "task": "copy",
+      "n": 2,
+      "status": "ok",
+      "exit_code": 0,
+      "wall_s": 46.9,
+      "result_events": 1,
+      "duration_ms_final_event": 44869,
+      "duration_ms": 44869,
+      "num_turns_final_event": 6,
+      "num_turns": 6,
+      "total_cost_usd": 0.40602299999999997,
+      "result_subtype": "success",
+      "is_error": false,
+      "check": {
+        "em_dashes": 0,
+        "en_dashes": 0,
+        "filler_total": 0,
+        "filler_hits": {},
+        "words": 350,
+        "post_exists": true
+      },
+      "usage": {
+        "tool_calls": 4,
+        "by_tool": {
+          "Bash": 3,
+          "Skill": 1
+        },
+        "skills_invoked": [
+          "humanizer"
+        ],
+        "subagents": [],
+        "mcp_tools_used": [],
+        "subagent_tool_calls": 0
+      },
+      "post_exists": true,
+      "em_dashes": 0,
+      "filler_total": 0,
+      "words": 350,
+      "en_dashes": 0,
+      "filler_hits": {}
+    },
+    {
+      "id": "pack-shipcheck-1",
+      "config": "pack",
+      "task": "shipcheck",
+      "n": 1,
+      "status": "ok",
+      "exit_code": 0,
+      "wall_s": 1000.3,
+      "result_events": 2,
+      "duration_ms_final_event": 180551,
+      "duration_ms": 576833,
+      "num_turns_final_event": 9,
+      "num_turns": 38,
+      "total_cost_usd": 4.77318625,
+      "result_subtype": "success",
+      "is_error": false,
+      "check": {
+        "score": 6,
+        "max": 6,
+        "func_score": 7,
+        "func_max": 7,
+        "import_ok": true,
+        "import_error": null,
+        "issues": {
+          "sqli": {
+            "fixed": true,
+            "detail": {
+              "' OR '1'='1": 0,
+              "alice' --": 0,
+              "x' UNION SELECT * FROM users --": 0,
+              "http /profile/x' OR '1'='1": 404
+            }
+          },
+          "secret": {
+            "old_key_token_accepted": false,
+            "app_files_loaded": [
+              "app.py"
+            ],
+            "literal_in_loaded_app_files": [],
+            "literal_in_any_py_file": [
+              "test_app.py"
+            ],
+            "literal_in_any_file": [
+              "test_app.py",
+              "backups/app.py.pre-security-fix"
+            ],
+            "env_vars_set_by_checker": [
+              "TDIR_SECRET_KEY"
+            ],
+            "noenv_import_ok": true,
+            "hardcoded_fallback_when_env_missing": false,
+            "fixed": true
+          },
+          "admin": {
+            "fixed": true,
+            "detail": {
+              "no token": 401,
+              "bob (not admin)": 403,
+              "garbage token": 401,
+              "empty bearer": 401
+            }
+          },
+          "xss": {
+            "fixed": true,
+            "via": "http"
+          },
+          "path": {
+            "fixed": true,
+            "detail": {
+              "/files/../app.py": 404,
+              "/files/%2e%2e/app.py": 404,
+              "/files/..%2fapp.py": 404,
+              "/files/%2e%2e%2fapp.py": 404,
+              "/files/../../../../../../../../../../../../../../../etc/hosts": 404,
+              "/files//etc/hosts": 404,
+              "/files/%2fetc%2fhosts": 404
+            }
+          },
+          "debug": {
+            "fixed": true,
+            "DEBUG_attr": "False",
+            "traceback_in_500": false
+          }
+        },
+        "functionality": {
+          "health": true,
+          "profile_alice": true,
+          "unknown_profile_404": true,
+          "download_handbook": true,
+          "me_with_token": true,
+          "me_without_token_401": true,
+          "admin_with_admin_token": true
+        },
+        "handle_return_shapes": [
+          "4"
+        ]
+      },
+      "usage": {
+        "tool_calls": 48,
+        "by_tool": {
+          "Bash": 41,
+          "Skill": 1,
+          "Write": 3,
+          "Agent": 1,
+          "Read": 1,
+          "ListAgents": 1
+        },
+        "skills_invoked": [
+          "never-get-hacked"
+        ],
+        "subagents": [
+          "general-purpose"
+        ],
+        "mcp_tools_used": [],
+        "subagent_tool_calls": 14
+      },
+      "score": 6,
+      "score_max": 6,
+      "func_score": 7,
+      "func_max": 7,
+      "process": {
+        "verified_after_last_edit": true,
+        "last_edit": "Bash: python3 - <<'PYEOF'\nsrc = open('test_app.py').read()\nextra = '''\n\nclass ReviewRegressionTest(unittest.TestCase):\n    \"\"\"Defects found by the post-fix review. Each failed before its fix.\"\"\"\n\n    def te",
+        "run_after": "(same command, after the write) ').write(src)\nprint(\"tests added\")\nPYEOF\npython3 -W error::ResourceWarning -m unittest test_app 2>&1 | tail -8"
+      }
+    },
+    {
+      "id": "pack-shipcheck-2",
+      "config": "pack",
+      "task": "shipcheck",
+      "n": 2,
+      "status": "ok",
+      "exit_code": 0,
+      "wall_s": 562.7,
+      "result_events": 1,
+      "duration_ms_final_event": 559942,
+      "duration_ms": 559942,
+      "num_turns_final_event": 28,
+      "num_turns": 28,
+      "total_cost_usd": 2.6305892500000008,
+      "result_subtype": "success",
+      "is_error": false,
+      "check": {
+        "score": 6,
+        "max": 6,
+        "func_score": 7,
+        "func_max": 7,
+        "import_ok": true,
+        "import_error": null,
+        "issues": {
+          "sqli": {
+            "fixed": true,
+            "detail": {
+              "' OR '1'='1": 0,
+              "alice' --": 0,
+              "x' UNION SELECT * FROM users --": 0,
+              "http /profile/x' OR '1'='1": 404
+            }
+          },
+          "secret": {
+            "old_key_token_accepted": false,
+            "app_files_loaded": [
+              "app.py"
+            ],
+            "literal_in_loaded_app_files": [],
+            "literal_in_any_py_file": [
+              ".backup-pre-security-fix/app.py"
+            ],
+            "literal_in_any_file": [
+              ".backup-pre-security-fix/app.py"
+            ],
+            "env_vars_set_by_checker": [
+              "TDIR_SECRET_KEY"
+            ],
+            "noenv_import_ok": true,
+            "hardcoded_fallback_when_env_missing": false,
+            "fixed": true
+          },
+          "admin": {
+            "fixed": true,
+            "detail": {
+              "no token": 401,
+              "bob (not admin)": 403,
+              "garbage token": 401,
+              "empty bearer": 401
+            }
+          },
+          "xss": {
+            "fixed": true,
+            "via": "http"
+          },
+          "path": {
+            "fixed": true,
+            "detail": {
+              "/files/../app.py": 404,
+              "/files/%2e%2e/app.py": 404,
+              "/files/..%2fapp.py": 404,
+              "/files/%2e%2e%2fapp.py": 404,
+              "/files/../../../../../../../../../../../../../../../etc/hosts": 404,
+              "/files//etc/hosts": 404,
+              "/files/%2fetc%2fhosts": 404
+            }
+          },
+          "debug": {
+            "fixed": true,
+            "DEBUG_attr": "False",
+            "traceback_in_500": false
+          }
+        },
+        "functionality": {
+          "health": true,
+          "profile_alice": true,
+          "unknown_profile_404": true,
+          "download_handbook": true,
+          "me_with_token": true,
+          "me_without_token_401": true,
+          "admin_with_admin_token": true
+        },
+        "handle_return_shapes": [
+          "3"
+        ]
+      },
+      "usage": {
+        "tool_calls": 31,
+        "by_tool": {
+          "Bash": 23,
+          "Skill": 1,
+          "Write": 2,
+          "Agent": 1,
+          "Read": 3,
+          "Edit": 1
+        },
+        "skills_invoked": [
+          "never-get-hacked"
+        ],
+        "subagents": [
+          "general-purpose"
+        ],
+        "mcp_tools_used": [],
+        "subagent_tool_calls": 6
+      },
+      "score": 6,
+      "score_max": 6,
+      "func_score": 7,
+      "func_max": 7,
+      "process": {
+        "verified_after_last_edit": true,
+        "last_edit": "Edit: /Users/Shared/cpb-runs/r3ad46ed4/team-directory/app.py",
+        "run_after": "rm -f team.db && python3 -c \"\nimport app\nprint('non-ascii sig now:', app.handle('GET','/me',{'Authorization':'Bearer alice.caf\u00e9'})[0])\nprint('valid token still:', app.handle('GET','/me',{'Authorization':'Bearer '+app.sign_token('bob')})[0])\nprint('forged token:', app.handle('GET','/admin/users',{'Au"
+      }
+    },
+    {
+      "id": "plain-bugfix-1",
+      "config": "plain",
+      "task": "bugfix",
+      "n": 1,
+      "status": "ok",
+      "exit_code": 0,
+      "wall_s": 214.5,
+      "result_events": 1,
+      "duration_ms_final_event": 213002,
+      "duration_ms": 213002,
+      "num_turns_final_event": 9,
+      "num_turns": 9,
+      "total_cost_usd": 0.55541,
+      "result_subtype": "success",
+      "is_error": false,
+      "check": {
+        "score": 10,
+        "max": 10,
+        "tests": {
+          "t01_regression_no_coupon": {
+            "pass": true
+          },
+          "t02_regression_shipping_under_threshold": {
+            "pass": true
+          },
+          "t03_reported_case_percent_coupon": {
+            "pass": true
+          },
+          "t04_fixed_coupon_tax_after_discount": {
+            "pass": true
+          },
+          "t05_coupon_larger_than_order_total": {
+            "pass": true
+          },
+          "t06_coupon_larger_than_order_receipt_lines": {
+            "pass": true
+          },
+          "t07_free_shipping_uses_amount_after_coupon": {
+            "pass": true
+          },
+          "t08_rounded_to_cents": {
+            "pass": true
+          },
+          "t09_receipt_adds_up": {
+            "pass": true
+          },
+          "t10_half_cent_rounds_up": {
+            "pass": true
+          }
+        }
+      },
+      "usage": {
+        "tool_calls": 8,
+        "by_tool": {
+          "Bash": 8
+        },
+        "skills_invoked": [],
+        "subagents": [],
+        "mcp_tools_used": [],
+        "subagent_tool_calls": 0
+      },
+      "score": 10,
+      "score_max": 10,
+      "process": {
+        "verified_after_last_edit": true,
+        "last_edit": "Bash: python3 - <<'EOF'\nsrc = open('test_checkout.py').read()\nsrc = src.replace('''    def test_half_cent_rounds_up(self):\n        # 8% of $0.69 is $0.0552 -> $0.06; the halfway case $0.065 goes up too.\n   ",
+        "run_after": "(same command, after the write) ').write(src)\nEOF\npython3 -m unittest test_checkout 2>&1 | tail -4\necho \"--- verify the halves actually differ from float round() ---\"\npython3 -c \"print('float round(0.815,2) =', round(0.815,2), '| round(2.675,2) =', round(2.675,2))\""
+      }
+    },
+    {
+      "id": "plain-bugfix-2",
+      "config": "plain",
+      "task": "bugfix",
+      "n": 2,
+      "status": "ok",
+      "exit_code": 0,
+      "wall_s": 310.9,
+      "result_events": 1,
+      "duration_ms_final_event": 309443,
+      "duration_ms": 309443,
+      "num_turns_final_event": 12,
+      "num_turns": 12,
+      "total_cost_usd": 0.783307,
+      "result_subtype": "success",
+      "is_error": false,
+      "check": {
+        "score": 10,
+        "max": 10,
+        "tests": {
+          "t01_regression_no_coupon": {
+            "pass": true
+          },
+          "t02_regression_shipping_under_threshold": {
+            "pass": true
+          },
+          "t03_reported_case_percent_coupon": {
+            "pass": true
+          },
+          "t04_fixed_coupon_tax_after_discount": {
+            "pass": true
+          },
+          "t05_coupon_larger_than_order_total": {
+            "pass": true
+          },
+          "t06_coupon_larger_than_order_receipt_lines": {
+            "pass": true
+          },
+          "t07_free_shipping_uses_amount_after_coupon": {
+            "pass": true
+          },
+          "t08_rounded_to_cents": {
+            "pass": true
+          },
+          "t09_receipt_adds_up": {
+            "pass": true
+          },
+          "t10_half_cent_rounds_up": {
+            "pass": true
+          }
+        }
+      },
+      "usage": {
+        "tool_calls": 11,
+        "by_tool": {
+          "Bash": 11
+        },
+        "skills_invoked": [],
+        "subagents": [],
+        "mcp_tools_used": [],
+        "subagent_tool_calls": 0
+      },
+      "score": 10,
+      "score_max": 10,
+      "process": {
+        "verified_after_last_edit": true,
+        "last_edit": "Bash: python3 - <<'PYEOF'\nsrc = open('checkout.py').read()\nsrc = src.replace(\n'''TAX_RATE = \"0.08\"\nFREE_SHIPPING_MIN = \"50.00\"\nSHIPPING_FEE = \"5.99\"\n\nCENTS = Decimal(\"0.01\")''',\n'''CENTS = Decimal(\"0.01\")\n\n",
+        "run_after": "(same command, after the write) ').write(src)\nPYEOF\nsed -n 29,40p checkout.py && echo \"...\" && sed -n 80,100p checkout.py && echo \"=== SUITE ===\" && python3 -m unittest test_checkout 2>&1 | tail -3"
+      }
+    },
+    {
+      "id": "plain-copy-1",
+      "config": "plain",
+      "task": "copy",
+      "n": 1,
+      "status": "ok",
+      "exit_code": 0,
+      "wall_s": 30.5,
+      "result_events": 1,
+      "duration_ms_final_event": 28870,
+      "duration_ms": 28870,
+      "num_turns_final_event": 4,
+      "num_turns": 4,
+      "total_cost_usd": 0.1635115,
+      "result_subtype": "success",
+      "is_error": false,
+      "check": {
+        "em_dashes": 5,
+        "en_dashes": 0,
+        "filler_total": 0,
+        "filler_hits": {},
+        "words": 300,
+        "post_exists": true
+      },
+      "usage": {
+        "tool_calls": 3,
+        "by_tool": {
+          "Bash": 3
+        },
+        "skills_invoked": [],
+        "subagents": [],
+        "mcp_tools_used": [],
+        "subagent_tool_calls": 0
+      },
+      "post_exists": true,
+      "em_dashes": 5,
+      "filler_total": 0,
+      "words": 300,
+      "en_dashes": 0,
+      "filler_hits": {}
+    },
+    {
+      "id": "plain-copy-2",
+      "config": "plain",
+      "task": "copy",
+      "n": 2,
+      "status": "ok",
+      "exit_code": 0,
+      "wall_s": 39.0,
+      "result_events": 1,
+      "duration_ms_final_event": 37730,
+      "duration_ms": 37730,
+      "num_turns_final_event": 4,
+      "num_turns": 4,
+      "total_cost_usd": 0.1676885,
+      "result_subtype": "success",
+      "is_error": false,
+      "check": {
+        "em_dashes": 4,
+        "en_dashes": 0,
+        "filler_total": 0,
+        "filler_hits": {},
+        "words": 356,
+        "post_exists": true
+      },
+      "usage": {
+        "tool_calls": 3,
+        "by_tool": {
+          "Bash": 3
+        },
+        "skills_invoked": [],
+        "subagents": [],
+        "mcp_tools_used": [],
+        "subagent_tool_calls": 0
+      },
+      "post_exists": true,
+      "em_dashes": 4,
+      "filler_total": 0,
+      "words": 356,
+      "en_dashes": 0,
+      "filler_hits": {}
+    },
+    {
+      "id": "plain-shipcheck-1",
+      "config": "plain",
+      "task": "shipcheck",
+      "n": 1,
+      "status": "ok",
+      "exit_code": 0,
+      "wall_s": 280.7,
+      "result_events": 1,
+      "duration_ms_final_event": 279169,
+      "duration_ms": 279169,
+      "num_turns_final_event": 12,
+      "num_turns": 12,
+      "total_cost_usd": 0.8306290000000001,
+      "result_subtype": "success",
+      "is_error": false,
+      "check": {
+        "score": 6,
+        "max": 6,
+        "func_score": 7,
+        "func_max": 7,
+        "import_ok": true,
+        "import_error": null,
+        "issues": {
+          "sqli": {
+            "fixed": true,
+            "detail": {
+              "' OR '1'='1": 0,
+              "alice' --": 0,
+              "x' UNION SELECT * FROM users --": 0,
+              "http /profile/x' OR '1'='1": 404
+            }
+          },
+          "secret": {
+            "old_key_token_accepted": false,
+            "app_files_loaded": [
+              "app.py"
+            ],
+            "literal_in_loaded_app_files": [],
+            "literal_in_any_py_file": [
+              "test_app.py"
+            ],
+            "literal_in_any_file": [
+              "test_app.py"
+            ],
+            "env_vars_set_by_checker": [
+              "TDIR_SECRET_KEY"
+            ],
+            "noenv_import_ok": true,
+            "hardcoded_fallback_when_env_missing": false,
+            "fixed": true
+          },
+          "admin": {
+            "fixed": true,
+            "detail": {
+              "no token": 401,
+              "bob (not admin)": 403,
+              "garbage token": 401,
+              "empty bearer": 401
+            }
+          },
+          "xss": {
+            "fixed": true,
+            "via": "http"
+          },
+          "path": {
+            "fixed": true,
+            "detail": {
+              "/files/../app.py": 404,
+              "/files/%2e%2e/app.py": 404,
+              "/files/..%2fapp.py": 404,
+              "/files/%2e%2e%2fapp.py": 404,
+              "/files/../../../../../../../../../../../../../../../etc/hosts": 404,
+              "/files//etc/hosts": 404,
+              "/files/%2fetc%2fhosts": 404
+            }
+          },
+          "debug": {
+            "fixed": true,
+            "DEBUG_attr": "False",
+            "traceback_in_500": false
+          }
+        },
+        "functionality": {
+          "health": true,
+          "profile_alice": true,
+          "unknown_profile_404": true,
+          "download_handbook": true,
+          "me_with_token": true,
+          "me_without_token_401": true,
+          "admin_with_admin_token": true
+        },
+        "handle_return_shapes": [
+          "3"
+        ]
+      },
+      "usage": {
+        "tool_calls": 11,
+        "by_tool": {
+          "Bash": 11
+        },
+        "skills_invoked": [],
+        "subagents": [],
+        "mcp_tools_used": [],
+        "subagent_tool_calls": 0
+      },
+      "score": 6,
+      "score_max": 6,
+      "func_score": 7,
+      "func_max": 7,
+      "process": {
+        "verified_after_last_edit": true,
+        "last_edit": "Bash: cat > test_app.py <<'PYEOF'\nimport json\nimport unittest\n\nimport app\n\n\nclass AppTest(unittest.TestCase):\n    def test_health(self):\n        status, _, body = app.handle(\"GET\", \"/health\")\n        self.a",
+        "run_after": "(same command, after the write) &lt;script&gt;\", out)\n\n    # --- Error handling ----------------------------------------------------\n    def test_debug_off_by_default(self):\n        self.assertFalse(app.DEBUG)\n\n\nif __name__ == \"__main__\":\n    unittest.main()\nPYEOF\npython3 -m unittest test_app -v 2>&"
+      }
+    },
+    {
+      "id": "plain-shipcheck-2",
+      "config": "plain",
+      "task": "shipcheck",
+      "n": 2,
+      "status": "ok",
+      "exit_code": 0,
+      "wall_s": 253.1,
+      "result_events": 1,
+      "duration_ms_final_event": 251908,
+      "duration_ms": 251908,
+      "num_turns_final_event": 13,
+      "num_turns": 13,
+      "total_cost_usd": 0.9202630000000002,
+      "result_subtype": "success",
+      "is_error": false,
+      "check": {
+        "score": 5,
+        "max": 6,
+        "func_score": 7,
+        "func_max": 7,
+        "import_ok": true,
+        "import_error": null,
+        "issues": {
+          "sqli": {
+            "fixed": true,
+            "detail": {
+              "' OR '1'='1": 0,
+              "alice' --": 0,
+              "x' UNION SELECT * FROM users --": 0,
+              "http /profile/x' OR '1'='1": 404
+            }
+          },
+          "secret": {
+            "old_key_token_accepted": false,
+            "app_files_loaded": [
+              "app.py"
+            ],
+            "literal_in_loaded_app_files": [],
+            "literal_in_any_py_file": [],
+            "literal_in_any_file": [],
+            "env_vars_set_by_checker": [
+              "TDIR_SECRET_KEY"
+            ],
+            "noenv_import_ok": true,
+            "hardcoded_fallback_when_env_missing": true,
+            "fixed": false
+          },
+          "admin": {
+            "fixed": true,
+            "detail": {
+              "no token": 401,
+              "bob (not admin)": 403,
+              "garbage token": 401,
+              "empty bearer": 401
+            }
+          },
+          "xss": {
+            "fixed": true,
+            "via": "http"
+          },
+          "path": {
+            "fixed": true,
+            "detail": {
+              "/files/../app.py": 404,
+              "/files/%2e%2e/app.py": 404,
+              "/files/..%2fapp.py": 404,
+              "/files/%2e%2e%2fapp.py": 404,
+              "/files/../../../../../../../../../../../../../../../etc/hosts": 404,
+              "/files//etc/hosts": 404,
+              "/files/%2fetc%2fhosts": 404
+            }
+          },
+          "debug": {
+            "fixed": true,
+            "DEBUG_attr": "False",
+            "traceback_in_500": false
+          }
+        },
+        "functionality": {
+          "health": true,
+          "profile_alice": true,
+          "unknown_profile_404": true,
+          "download_handbook": true,
+          "me_with_token": true,
+          "me_without_token_401": true,
+          "admin_with_admin_token": true
+        },
+        "handle_return_shapes": [
+          "3"
+        ]
+      },
+      "usage": {
+        "tool_calls": 12,
+        "by_tool": {
+          "Bash": 12
+        },
+        "skills_invoked": [],
+        "subagents": [],
+        "mcp_tools_used": [],
+        "subagent_tool_calls": 0
+      },
+      "score": 5,
+      "score_max": 6,
+      "func_score": 7,
+      "func_max": 7,
+      "process": {
+        "verified_after_last_edit": true,
+        "last_edit": "Bash: cat > test_app.py <<'PYEOF'\nimport json\nimport unittest\n\nimport app\n\n\nclass AppTest(unittest.TestCase):\n    def test_health(self):\n        status, _, body = app.handle(\"GET\", \"/health\")\n        self.a",
+        "run_after": "(same command, after the write) ssertEqual(status, 401)\n\n    def test_non_get_is_rejected(self):\n        status, _, _ = app.handle(\"POST\", \"/admin/users\")\n        self.assertEqual(status, 405)\n\n\nif __name__ == \"__main__\":\n    unittest.main()\nPYEOF\nrm -f team.db && python3 -m unittest test_app -v 2>&"
+      }
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+Guest network: lumen-guest
+Ask reception for the day code.

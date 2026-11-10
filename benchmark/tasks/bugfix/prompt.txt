@@ -1,0 +1,5 @@
+Support ticket #4471 from a customer:
+
+> I ordered $150 of tea (three tins of Imperial Green at $50 each) and used the code SAVE20 for 20% off. Checkout charged me $132.00, but by my math it should be $129.60. Can you check?
+
+Please fix it.

@@ -39,6 +39,10 @@ Licence texts are in [`licenses/`](licenses/). Skills that ship their own LICENS
 
 `ad-creative-pro` combines two MIT-licensed skills: `ads-creative` by AgriciDaniel ([claude-ads](https://github.com/AgriciDaniel/claude-ads), `licenses/AgriciDaniel__claude-ads.txt`) and `ad-creative` by Corey Haines ([marketingskills](https://github.com/coreyhaines31/marketingskills), `licenses/coreyhaines31__marketingskills.txt`).
 
+## Website fonts
+
+The website in `site/` serves its own copies of [Bricolage Grotesque](https://github.com/ateliertriay/bricolage) by Mathieu Triay and [Geist and Geist Mono](https://github.com/vercel/geist-font) by Vercel, all under the [SIL Open Font License 1.1](https://openfontlicense.org/). They are only used by the website, and nothing is installed from them.
+
 ## Trademarks
 
 Claude is a trademark of Anthropic. This is an independent community project, not made or endorsed by Anthropic or by any of the companies whose tools it connects to.

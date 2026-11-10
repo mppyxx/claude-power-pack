@@ -35,7 +35,7 @@ You never have to name a skill. Describe the outcome; if Claude picks the wrong 
 
 - **New task, new session.** Long conversations get worse well before they're full. Start fresh for each separate job.
 - **Say what "done" looks like.** "Working signup with email confirmation, tested in the browser" beats "add signup".
-- **Let it verify.** The rules make Claude test before it claims something works. If it ever says "done" without showing proof, ask "how did you check?"
+- **Let it verify.** The rules tell Claude to check its work before it claims something works. If it ever says "done" without showing proof, ask "how did you check?"
 - **Ask for a second opinion on big work.** "Run an independent review of everything you changed" catches bugs the author misses.
 - **Correct it once, durably.** When something bugs you, tell Claude to add a rule to CLAUDE.md or save a memory, so you never repeat yourself.
 - **Use plan mode for big changes.** Shift+Tab cycles modes in the terminal; plan mode makes Claude propose before it touches files.

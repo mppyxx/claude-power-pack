@@ -101,11 +101,22 @@ You never have to name a skill. Describe the outcome and Claude picks the right 
 | Fresh Claude Code | With Claude Power Pack |
 |---|---|
 | Stops to ask before most steps | Picks the best option and builds it. Only stops for money, passwords and messages to people |
-| Says "done" once the code is written | Runs it, clicks through the screens, shows you proof |
+| Says "done" once the code is written | Reviews its own work before calling it done, and big jobs get a second, independent review |
 | UI that looks like every other AI site | 23 design skills, checked in a real browser at desktop and mobile size |
 | Limited to the files on your machine | Web research, scraping, browser control, and a guide to 14 app connectors |
 | You hunt for skills one at a time | 94 skills that work together, sorted by job |
 | Default model and effort | Opus at high effort, with multi-agent workflows on |
+
+## Does it actually help? A small, honest benchmark
+
+12 runs on 2026-10-08: plain Claude Code against Claude Code with the pack, same model, prompts and starting files, scored by hidden checkers.
+
+- **Code tasks: a tie.** Both passed every hidden test on the bug fix. On the security task the pack fixed 6 of 6 seeded issues and plain fixed 5.5 on average, and that half point is a judgment call.
+- **Writing: no em dashes with the pack** (plain averaged 4.5 per post). That mostly shows Claude follows a written rule.
+- **The pack's review step caught a crash bug** that plain left in both of its security runs. This was spotted after scoring, so it is reported, not scored.
+- **The pack was about 3 times slower and 4 times more expensive per run.** It runs at high effort and starts a review on code work.
+
+Two runs per task is far too few to prove anything. Method, every number and every caveat: [benchmark/](benchmark/).
 
 ## Is it safe?
 
@@ -190,6 +201,6 @@ Know a skill that belongs here? [Suggest it](https://github.com/mppyxx/claude-po
 
 Most skills here were written by other people and are shared under their open-source licences: see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for every author and licence. Everything written for this pack is [MIT](LICENSE).
 
-Not affiliated with Anthropic.
+Made by [Manthan Pandya](https://github.com/mppyxx) (Mappy). Not affiliated with Anthropic.
 
 <p align="center"><b>If this saved you a weekend of setup, a star helps other people find it.</b></p>

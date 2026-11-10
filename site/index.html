@@ -27,9 +27,14 @@
 <meta name="twitter:image:alt" content="Claude Power Pack banner: a terminal where someone types install this and the setup ends with Core install: OK">
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2317140f'/%3E%3Crect x='14' y='14' width='36' height='36' rx='6' fill='%23ff4f1a'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preload" href="/claude-power-pack/assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/claude-power-pack/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* Self-hosted (SIL Open Font License): no render-blocking request to another host. Latin subset, variable weights. */
+@font-face{font-family:'Bricolage Grotesque';font-style:normal;font-weight:700 800;font-stretch:100%;font-display:swap;src:url(/claude-power-pack/assets/fonts/bricolage-grotesque-latin.woff2) format('woff2')}
+@font-face{font-family:'Geist';font-style:normal;font-weight:400 600;font-display:swap;src:url(/claude-power-pack/assets/fonts/geist-latin.woff2) format('woff2')}
+@font-face{font-family:'Geist Mono';font-style:normal;font-weight:400 500;font-display:swap;src:url(/claude-power-pack/assets/fonts/geist-mono-latin.woff2) format('woff2')}
+</style>
 <script>document.documentElement.className = 'js';</script>
 
 <!-- ld:start -->
@@ -50,11 +55,27 @@
       "isAccessibleForFree": true,
       "image": "https://mppyxx.github.io/claude-power-pack/assets/banner.png",
       "keywords": "Claude Code, Claude Code skills, Claude Code plugins, CLAUDE.md, MCP servers, Claude setup, installer",
-      "author": {
-        "@type": "Person",
-        "name": "mppyxx",
-        "url": "https://github.com/mppyxx"
-      }
+      "softwareVersion": "1.1.0",
+      "dateModified": "2026-11-11",
+      "author": { "@id": "https://github.com/mppyxx#person" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://github.com/mppyxx#person",
+      "name": "Manthan Pandya",
+      "alternateName": ["Mappy", "mppyxx"],
+      "url": "https://github.com/mppyxx",
+      "sameAs": ["https://github.com/mppyxx", "https://www.instagram.com/mappy.music/"],
+      "jobTitle": "Music producer and developer",
+      "homeLocation": { "@type": "Place", "name": "Barrie, Ontario, Canada" }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://mppyxx.github.io/claude-power-pack/#website",
+      "name": "Claude Power Pack",
+      "url": "https://mppyxx.github.io/claude-power-pack/",
+      "inLanguage": "en",
+      "publisher": { "@id": "https://github.com/mppyxx#person" }
     },
     {
       "@type": "FAQPage",
@@ -503,7 +524,7 @@
     </div>
     <ol class="changes">
       <li><span class="n" aria-hidden="true">01</span><div><h3>It acts instead of asking</h3><p>Claude maps the options, picks the best one and builds it. It only stops for things that truly need you: spending money, passwords, messages to people.</p></div></li>
-      <li><span class="n" aria-hidden="true">02</span><div><h3>It tests before it says "done"</h3><p>It runs the code, clicks through the screens and checks the output. Big jobs get a second, independent review before they count as finished.</p></div></li>
+      <li><span class="n" aria-hidden="true">02</span><div><h3>It reviews its own work</h3><p>The working rules tell it to run the code and check the output before it calls a job finished. Big jobs get a second, independent review.</p></div></li>
       <li><span class="n" aria-hidden="true">03</span><div><h3>Design that doesn't look AI-made</h3><p>23 design skills steer away from the default purple-gradient template look, and the rules make Claude check the result in a real browser, at mobile width too.</p></div></li>
       <li><span class="n" aria-hidden="true">04</span><div><h3>It reaches your tools</h3><p>Once you connect them: Gmail, Calendar, Drive, Notion, Figma, Canva, Vercel and more. Plus web research, scraping and browser automation out of the box.</p></div></li>
     </ol>

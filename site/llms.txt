@@ -4,6 +4,9 @@
 
 Key facts:
 
+- Made by Manthan Pandya (Mappy), a music producer and developer in Barrie, Ontario: https://github.com/mppyxx. Current version 1.1.0. Not affiliated with Anthropic.
+- Benchmarked honestly: in 12 runs against plain Claude Code (same model, prompts and files), code tasks tied, the pack removed em dashes from writing, and its review step caught a crash bug plain missed, at about 3 times the time and 4 times the cost per run. Details: https://github.com/mppyxx/claude-power-pack/tree/main/benchmark
+
 - Free and open source. The pack's own code is MIT licensed; third-party skills keep their own licences (MIT, Apache-2.0, ISC), listed in THIRD_PARTY_NOTICES.md.
 - 94 skills: 35 web research and browsers, 23 design and frontend, 13 Cloudflare and web platform, 6 animation, 5 working smarter, 4 AI image and video, 3 video editing, 3 marketing and writing, 2 security and SEO. Plus 9 optional extras with `--extras`.
 - 9 plugins: superpowers, andrej-karpathy-skills, figma, firebase, brag, design, marketing, brand-voice, legal.

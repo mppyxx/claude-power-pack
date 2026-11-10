@@ -1,0 +1,5 @@
+Lumen team handbook
+
+1. Standup is at 10:00, async on Fridays.
+2. Expenses under $50 need no approval.
+3. On-call rotation lives in the shared calendar.

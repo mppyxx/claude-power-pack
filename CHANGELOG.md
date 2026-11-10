@@ -2,6 +2,20 @@
 
 What changed in each release of Claude Power Pack. Dates are year-month-day.
 
+## Website update (2026-11-11)
+
+No changes to what gets installed.
+
+- The website serves its own fonts instead of loading them from Google Fonts, so the page shows up faster on phones.
+- The page's structured data now names the author and the site, and `llms.txt` has the author, the version and the benchmark in brief.
+
+## Docs update (2026-10-09)
+
+No changes to what gets installed.
+
+- New `benchmark/` folder: a small plain-vs-pack test with its method, every number and every caveat. The raw transcripts are not included because they contain account identifiers.
+- More accurate wording: the pack "reviews its own work" instead of "tests before it says done". The working rules ask Claude to check its work, and the benchmark showed plain Claude Code already runs its tests on simple tasks.
+
 ## 1.1.0 (2026-10-08)
 
 ### Automatic updates
